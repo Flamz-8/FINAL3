@@ -75,6 +75,10 @@ uv run python -m pkm add note "Mitochondria is the powerhouse of the cell" \
 # Add a task with priority
 uv run python -m pkm add task "Submit lab report" --priority high
 
+# Add a task with due date
+uv run python -m pkm add task "Study for exam" --due "tomorrow"
+uv run python -m pkm add task "Final project" --due "next Friday"
+
 # Add task to a course
 uv run python -m pkm add task "Review chapter 5" --course "Biology 101"
 ```
@@ -169,6 +173,20 @@ uv run python -m pkm add note "Key Points from Lecture:
 uv run python -m pkm add task "Study for midterm"
 ```
 
+#### Task with Due Date
+```bash
+# Natural language
+uv run python -m pkm add task "Submit lab report" --due "tomorrow"
+uv run python -m pkm add task "Final project" --due "next Friday"
+uv run python -m pkm add task "Review notes" --due "in 3 days"
+
+# Specific date
+uv run python -m pkm add task "Research paper" --due "2025-12-15"
+
+# With time
+uv run python -m pkm add task "Quiz" --due "Friday 11:59pm"
+```
+
 #### Task with Priority
 ```bash
 uv run python -m pkm add task "Submit lab report" --priority high
@@ -187,8 +205,23 @@ uv run python -m pkm add task "Complete problem set 5" \
 #### Combine All Options
 ```bash
 uv run python -m pkm add task "Prepare presentation on photosynthesis" \
+  --due "next Friday" \
   --course "Biology 101" \
   --priority medium
+```
+
+#### Managing Subtasks (Bullet Points)
+```bash
+# Add subtasks to break down a task
+uv run python -m pkm task add-subtask TASK_ID "Read chapter 1"
+uv run python -m pkm task add-subtask TASK_ID "Complete exercises"
+uv run python -m pkm task add-subtask TASK_ID "Write summary"
+
+# Mark a subtask as complete
+uv run python -m pkm task check-subtask TASK_ID 1
+
+# Complete the entire task
+uv run python -m pkm task complete TASK_ID
 ```
 
 ---
@@ -199,6 +232,18 @@ uv run python -m pkm add task "Prepare presentation on photosynthesis" \
 See all unorganized notes and tasks:
 ```bash
 uv run python -m pkm view inbox
+```
+
+#### View Tasks by Due Date
+```bash
+# Tasks due today
+uv run python -m pkm view today
+
+# Tasks due this week (next 7 days)
+uv run python -m pkm view week
+
+# Overdue tasks
+uv run python -m pkm view overdue
 ```
 
 #### Custom Data Directory
@@ -213,16 +258,24 @@ Default data location: `~/.pkm/data.json`
 
 ## Implementation Status
 
-### ✅ Currently Working (Phase 1-3)
+### ✅ Currently Working (Phase 1-4)
 
 - **Quick Capture**
   - `pkm add note` - Add notes with content
   - `pkm add task` - Add tasks with priority
   - Topic tagging with `--topics`
   - Course assignment with `--course`
+  - **NEW: Due dates** with natural language parsing (`--due "tomorrow"`)
+
+- **Task Management**
+  - **NEW: Due date parsing** - "tomorrow", "next Friday", "2025-12-01", "Friday 11:59pm"
+  - **NEW: Subtasks/Bullet Points** - Break down tasks into steps
+  - **NEW: Task completion** - Mark tasks and subtasks as done
+  - **NEW: Filtered views** - `view today`, `view week`, `view overdue`
+  - Priority levels (high, medium, low)
 
 - **Inbox Management**
-  - `pkm view inbox` - View unorganized items
+  - `pkm view inbox` - View unorganized items with due dates and subtask progress
   - Rich terminal tables with colors
   - Automatic ID generation
 
@@ -231,13 +284,7 @@ Default data location: `~/.pkm/data.json`
   - Atomic writes with automatic backup
   - Corruption recovery
 
-### ⏳ Coming Soon (Phase 4+)
-
-- **Task Management** (Phase 4)
-  - Due dates: `--due "tomorrow"`, `--due "2025-12-01"`
-  - Date parsing: "Friday", "next week"
-  - Views: `pkm view today`, `pkm view week`, `pkm view overdue`
-  - Task completion: `pkm task complete`
+### ⏳ Coming Soon (Phase 5+)
 
 - **Organization** (Phase 5-6)
   - `pkm organize note` - Move notes to courses
@@ -249,7 +296,6 @@ Default data location: `~/.pkm/data.json`
   - Help system and onboarding
   - Full-text search across notes and tasks
   - Note-task linking
-  - Task subtasks and dependencies
   - Performance optimization
 
 ---
@@ -260,7 +306,13 @@ Default data location: `~/.pkm/data.json`
 Add notes and tasks with minimal friction - capture first, organize later
 
 ### ✅ Task Management  
-Priority levels, due dates (coming soon), subtasks (coming soon)
+Priority levels, natural language due dates, subtasks for breaking down work
+
+### 📅 Smart Due Dates
+Parse "tomorrow", "next Friday", "in 3 days", or specific dates like "2025-12-15"
+
+### 📋 Subtasks / Bullet Points
+Break down complex tasks into manageable steps with progress tracking
 
 ### 📚 Course Organization
 Group notes and tasks by academic subject
@@ -268,8 +320,8 @@ Group notes and tasks by academic subject
 ### 🏷️ Topic Tagging
 Categorize notes with multiple tags for easy retrieval
 
-### 🔍 Full-Text Search *(Coming Soon)*
-Find anything across all your notes and tasks
+### 🔍 Filtered Views
+See tasks due today, this week, or overdue at a glance
 
 ### 🔗 Note-Task Linking *(Coming Soon)*
 Reference notes from tasks for context
@@ -296,12 +348,22 @@ All data stored locally in human-readable JSON format
 ### Add Commands
 ```bash
 pkm add note CONTENT [--course NAME] [--topics TAG]...
-pkm add task TITLE [--priority high|medium|low] [--course NAME]
+pkm add task TITLE [--due DATE] [--priority high|medium|low] [--course NAME]
+```
+
+### Task Commands
+```bash
+pkm task complete TASK_ID              # Mark task as done
+pkm task add-subtask TASK_ID TITLE     # Add a subtask/bullet point
+pkm task check-subtask TASK_ID NUM     # Complete a subtask
 ```
 
 ### View Commands
 ```bash
 pkm view inbox         # Show unorganized notes and tasks
+pkm view today         # Tasks due today
+pkm view week          # Tasks due this week (next 7 days)
+pkm view overdue       # Past-due incomplete tasks
 ```
 
 ### Help
@@ -328,12 +390,24 @@ uv run python -m pkm add task "Review photosynthesis slides"
 
 ### Study Session Workflow
 ```bash
+# View what's urgent
+uv run python -m pkm view today
+
 # View what needs attention
 uv run python -m pkm view inbox
 
-# Add study tasks with priority
-uv run python -m pkm add task "Study for Biology midterm" --priority high
-uv run python -m pkm add task "Complete Math homework" --priority medium
+# Add study tasks with priority and due dates
+uv run python -m pkm add task "Study for Biology midterm" \
+  --due "Friday 11:59pm" \
+  --priority high
+
+# Break down a complex task
+uv run python -m pkm task add-subtask TASK_ID "Review chapter 1"
+uv run python -m pkm task add-subtask TASK_ID "Review chapter 2"
+uv run python -m pkm task add-subtask TASK_ID "Complete practice problems"
+
+# Mark progress as you go
+uv run python -m pkm task check-subtask TASK_ID 1
 
 # Tag notes by topic
 uv run python -m pkm add note "Practice problems for exam" \
@@ -343,15 +417,25 @@ uv run python -m pkm add note "Practice problems for exam" \
 
 ### Assignment Tracking
 ```bash
-# Create high-priority task
+# Create high-priority task with due date
 uv run python -m pkm add task "Submit research paper" \
+  --due "next Friday 11:59pm" \
   --priority high \
   --course "English 101"
+
+# Break it down into steps
+uv run python -m pkm task add-subtask TASK_ID "Complete outline"
+uv run python -m pkm task add-subtask TASK_ID "Write first draft"
+uv run python -m pkm task add-subtask TASK_ID "Peer review"
+uv run python -m pkm task add-subtask TASK_ID "Final revision"
 
 # Add supporting notes
 uv run python -m pkm add note "Thesis: Climate change impacts on agriculture" \
   --course "English 101" \
   --topics "Research Paper"
+
+# Check your progress
+uv run python -m pkm view week
 ```
 
 ---

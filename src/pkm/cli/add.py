@@ -4,10 +4,11 @@ from pathlib import Path
 
 import click
 
-from pkm.cli.helpers import error, success
+from pkm.cli.helpers import error, success, info
 from pkm.cli.main import cli
 from pkm.services.note_service import NoteService
 from pkm.services.task_service import TaskService
+from pkm.utils.date_parser import parse_due_date, format_due_date
 
 
 def get_data_dir(ctx: click.Context) -> Path:
@@ -107,7 +108,7 @@ def add_note(ctx: click.Context, content: str, course: str | None, topics: tuple
 
 @add.command(name="task")
 @click.argument("title", required=True)
-@click.option("--due", "-d", help="Due date (COMING SOON - e.g., 'tomorrow', '2025-12-01')")
+@click.option("--due", "-d", help="Due date (e.g., 'tomorrow', 'next Friday', '2025-12-01', 'Friday 11:59pm')")
 @click.option("--priority", "-p", type=click.Choice(["high", "medium", "low"]), default="medium", help="Task priority: high, medium (default), or low")
 @click.option("--course", "-c", help="Assign to course (leaves inbox if omitted)")
 @click.pass_context
@@ -119,7 +120,7 @@ def add_task(ctx: click.Context, title: str, due: str | None, priority: str, cou
     
     \b
     Options:
-      -d, --due TEXT         Due date (COMING SOON in Phase 4)
+      -d, --due TEXT         Due date (natural language or YYYY-MM-DD)
       -p, --priority TEXT    Priority level: high, medium, low (default: medium)
       -c, --course TEXT      Assign to a course (e.g., "Math 201")
     
@@ -127,6 +128,11 @@ def add_task(ctx: click.Context, title: str, due: str | None, priority: str, cou
     Examples:
       # Quick task
       pkm add task "Submit lab report"
+      
+      # Task with due date
+      pkm add task "Submit lab report" --due "Friday 11:59pm"
+      pkm add task "Study for exam" --due "tomorrow"
+      pkm add task "Final project" --due "2025-12-15"
       
       # High-priority task
       pkm add task "Study for midterm" --priority high
@@ -136,6 +142,7 @@ def add_task(ctx: click.Context, title: str, due: str | None, priority: str, cou
       
       # Combine options
       pkm add task "Finish research paper" \\
+        --due "next Friday" \\
         --priority high \\
         --course "English 101"
     
@@ -145,15 +152,26 @@ def add_task(ctx: click.Context, title: str, due: str | None, priority: str, cou
       medium - Normal tasks (default)
       low    - Nice to have, flexible timing
     
+    \b
+    Due Date Formats:
+      Natural: "tomorrow", "next Friday", "in 3 days"
+      ISO:     "2025-12-01"
+      Human:   "Dec 1", "Friday 11:59pm"
+    
     Tasks without a course are stored in your inbox for later organization.
-    Note: Due date parsing (--due) will be available in Phase 4.
     """
     try:
         data_dir = get_data_dir(ctx)
         service = TaskService(data_dir)
         
-        # TODO: Parse due date with date_parser (Phase 4)
+        # Parse due date
         due_date = None
+        if due:
+            due_date = parse_due_date(due)
+            if due_date is None:
+                error(f"Could not parse due date: '{due}'")
+                info("Try formats like: 'tomorrow', 'next Friday', '2025-12-01', 'Friday 11:59pm'")
+                ctx.exit(1)
         
         task = service.create_task(
             title=title,
@@ -164,6 +182,9 @@ def add_task(ctx: click.Context, title: str, due: str | None, priority: str, cou
         
         location = f"course '{course}'" if course else "inbox"
         success(f"Task created: {task.id} in {location}")
+        
+        if due_date:
+            success(f"Due: {format_due_date(due_date)}")
         
         if priority != "medium":
             success(f"Priority: {priority}")
