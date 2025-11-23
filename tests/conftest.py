@@ -30,7 +30,7 @@ def sample_data_file(temp_data_dir: Path) -> Path:
     sample_data = {
         "notes": [
             {
-                "id": "n_20251123_100000_abc",
+                "id": "n1",
                 "content": "Test note 1",
                 "created_at": "2025-11-23T10:00:00",
                 "modified_at": "2025-11-23T10:00:00",
@@ -41,7 +41,7 @@ def sample_data_file(temp_data_dir: Path) -> Path:
         ],
         "tasks": [
             {
-                "id": "t_20251123_110000_xyz",
+                "id": "t1",
                 "title": "Test task 1",
                 "created_at": "2025-11-23T11:00:00",
                 "due_date": None,

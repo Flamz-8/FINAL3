@@ -17,16 +17,17 @@ class TestIDGeneration:
     def test_generate_note_id(self) -> None:
         """Test generating a note ID."""
         note_id = generate_id("n")
-        assert note_id.startswith("n_")
-        # Format: n_YYYYMMDD_HHMMSS_xxx (4 parts when split by _)
-        parts = note_id.split("_")
-        assert len(parts) == 4
-        assert len(parts[3]) == 3  # Random suffix
+        assert note_id.startswith("n")
+        # Format: n{number} (e.g., n1, n42)
+        assert note_id[1:].isdigit()
+        assert len(note_id) >= 2  # At least "n1"
 
     def test_generate_task_id(self) -> None:
         """Test generating a task ID."""
         task_id = generate_id("t")
-        assert task_id.startswith("t_")
+        assert task_id.startswith("t")
+        assert task_id[1:].isdigit()
+        assert len(task_id) >= 2  # At least "t1"
 
     def test_ids_are_unique(self) -> None:
         """Test that generated IDs are unique."""
@@ -40,12 +41,12 @@ class TestNoteModel:
     def test_create_valid_note(self) -> None:
         """Test creating a valid note."""
         note = Note(
-            id="n_20251123_103045_a7c",
+            id="n1",
             content="Test note content",
             created_at=datetime(2025, 11, 23, 10, 30, 45),
             modified_at=datetime(2025, 11, 23, 10, 30, 45),
         )
-        assert note.id == "n_20251123_103045_a7c"
+        assert note.id == "n1"
         assert note.content == "Test note content"
         assert note.course is None
         assert note.topics == []
@@ -54,7 +55,7 @@ class TestNoteModel:
     def test_note_with_course_and_topics(self) -> None:
         """Test note with course and topics."""
         note = Note(
-            id="n_20251123_103045_a7c",
+            id="n2",
             content="Photosynthesis notes",
             created_at=datetime.now(),
             modified_at=datetime.now(),
@@ -68,7 +69,7 @@ class TestNoteModel:
         """Test that empty content is rejected."""
         with pytest.raises(ValidationError):
             Note(
-                id="n_20251123_103045_a7c",
+                id="n3",
                 content="",
                 created_at=datetime.now(),
                 modified_at=datetime.now(),
@@ -78,7 +79,7 @@ class TestNoteModel:
         """Test that content over 10,000 chars is rejected."""
         with pytest.raises(ValidationError):
             Note(
-                id="n_20251123_103045_a7c",
+                id="n4",
                 content="a" * 10001,
                 created_at=datetime.now(),
                 modified_at=datetime.now(),
@@ -98,7 +99,7 @@ class TestNoteModel:
         """Test that topics over 50 chars are rejected."""
         with pytest.raises(ValidationError):
             Note(
-                id="n_20251123_103045_a7c",
+                id="n5",
                 content="Test",
                 created_at=datetime.now(),
                 modified_at=datetime.now(),
@@ -112,11 +113,11 @@ class TestTaskModel:
     def test_create_valid_task(self) -> None:
         """Test creating a valid task."""
         task = Task(
-            id="t_20251123_140000_xyz",
+            id="t1",
             title="Submit lab report",
             created_at=datetime(2025, 11, 23, 14, 0, 0),
         )
-        assert task.id == "t_20251123_140000_xyz"
+        assert task.id == "t1"
         assert task.title == "Submit lab report"
         assert task.priority == "medium"
         assert not task.completed
@@ -125,7 +126,7 @@ class TestTaskModel:
     def test_task_with_due_date_and_priority(self) -> None:
         """Test task with due date and priority."""
         task = Task(
-            id="t_20251123_140000_xyz",
+            id="t2",
             title="Submit lab report",
             created_at=datetime.now(),
             due_date=datetime(2025, 11, 25, 23, 59, 59),
@@ -137,7 +138,7 @@ class TestTaskModel:
     def test_task_with_subtasks(self) -> None:
         """Test task with subtasks."""
         task = Task(
-            id="t_20251123_140000_xyz",
+            id="t3",
             title="Complete project",
             created_at=datetime.now(),
             subtasks=[
@@ -151,20 +152,20 @@ class TestTaskModel:
     def test_task_title_validation(self) -> None:
         """Test that empty title is rejected."""
         with pytest.raises(ValidationError):
-            Task(id="t_20251123_140000_xyz", title="", created_at=datetime.now())
+            Task(id="t4", title="", created_at=datetime.now())
 
     def test_task_title_max_length(self) -> None:
         """Test that title over 200 chars is rejected."""
         with pytest.raises(ValidationError):
             Task(
-                id="t_20251123_140000_xyz", title="a" * 201, created_at=datetime.now()
+                id="t5", title="a" * 201, created_at=datetime.now()
             )
 
     def test_task_invalid_priority(self) -> None:
         """Test that invalid priority is rejected."""
         with pytest.raises(ValidationError):
             Task(
-                id="t_20251123_140000_xyz",
+                id="t6",
                 title="Test",
                 created_at=datetime.now(),
                 priority="urgent",  # type: ignore
@@ -174,7 +175,7 @@ class TestTaskModel:
         """Test that completed_at can only be set if completed is True."""
         with pytest.raises(ValidationError):
             Task(
-                id="t_20251123_140000_xyz",
+                id="t7",
                 title="Test",
                 created_at=datetime.now(),
                 completed=False,
@@ -184,7 +185,7 @@ class TestTaskModel:
     def test_task_is_overdue(self) -> None:
         """Test is_overdue property."""
         task = Task(
-            id="t_20251123_140000_xyz",
+            id="t8",
             title="Test",
             created_at=datetime.now(),
             due_date=datetime(2020, 1, 1),  # Past date
@@ -194,7 +195,7 @@ class TestTaskModel:
     def test_task_not_overdue_if_completed(self) -> None:
         """Test that completed tasks are not overdue."""
         task = Task(
-            id="t_20251123_140000_xyz",
+            id="t9",
             title="Test",
             created_at=datetime.now(),
             due_date=datetime(2020, 1, 1),
@@ -206,7 +207,7 @@ class TestTaskModel:
     def test_task_subtask_progress(self) -> None:
         """Test subtask progress calculation."""
         task = Task(
-            id="t_20251123_140000_xyz",
+            id="t10",
             title="Test",
             created_at=datetime.now(),
             subtasks=[
@@ -221,7 +222,7 @@ class TestTaskModel:
         """Test that duplicate subtask IDs are rejected."""
         with pytest.raises(ValidationError):
             Task(
-                id="t_20251123_140000_xyz",
+                id="t11",
                 title="Test",
                 created_at=datetime.now(),
                 subtasks=[

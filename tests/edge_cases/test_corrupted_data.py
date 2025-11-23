@@ -20,7 +20,7 @@ class TestCorruptedData:
         valid_data = create_empty_schema()
         valid_data["notes"].append(
             {
-                "id": "n_20251123_100000_abc",
+                "id": "n1",
                 "content": "Backup note",
                 "created_at": "2025-11-23T10:00:00",
                 "modified_at": "2025-11-23T10:00:00",

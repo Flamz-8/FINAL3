@@ -2,8 +2,10 @@
 
 from datetime import datetime, date, timedelta
 from pathlib import Path
+import re
 
 from pkm.models.task import Task, Subtask
+from pkm.models.common import reset_id_counter
 from pkm.services.id_generator import generate_task_id
 from pkm.storage.json_store import JSONStore
 from pkm.storage.schema import deserialize_task, serialize_task
@@ -19,6 +21,22 @@ class TaskService:
             data_dir: Directory containing data.json
         """
         self.store = JSONStore(data_dir / "data.json")
+        self._initialize_id_counter()
+    
+    def _initialize_id_counter(self) -> None:
+        """Initialize the ID counter based on existing tasks."""
+        data = self.store.load()
+        max_id = 0
+        
+        for task_data in data.get("tasks", []):
+            task_id = task_data.get("id", "")
+            # Extract number from ID (e.g., "t5" -> 5)
+            match = re.match(r"t(\d+)", task_id)
+            if match:
+                num = int(match.group(1))
+                max_id = max(max_id, num)
+        
+        reset_id_counter("t", max_id)
 
     def create_task(
         self,

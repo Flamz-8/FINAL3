@@ -2,8 +2,10 @@
 
 from datetime import datetime
 from pathlib import Path
+import re
 
 from pkm.models.note import Note
+from pkm.models.common import reset_id_counter
 from pkm.services.id_generator import generate_note_id
 from pkm.storage.json_store import JSONStore
 from pkm.storage.schema import deserialize_note, serialize_note
@@ -19,6 +21,22 @@ class NoteService:
             data_dir: Directory containing data.json
         """
         self.store = JSONStore(data_dir / "data.json")
+        self._initialize_id_counter()
+    
+    def _initialize_id_counter(self) -> None:
+        """Initialize the ID counter based on existing notes."""
+        data = self.store.load()
+        max_id = 0
+        
+        for note_data in data.get("notes", []):
+            note_id = note_data.get("id", "")
+            # Extract number from ID (e.g., "n5" -> 5)
+            match = re.match(r"n(\d+)", note_id)
+            if match:
+                num = int(match.group(1))
+                max_id = max(max_id, num)
+        
+        reset_id_counter("n", max_id)
 
     def create_note(
         self, content: str, course: str | None = None, topics: list[str] | None = None

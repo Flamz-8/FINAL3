@@ -26,7 +26,7 @@ class TestJSONStore:
         data = create_empty_schema()
         data["notes"].append(
             {
-                "id": "n_20251123_100000_abc",
+                "id": "n1",
                 "content": "Test note",
                 "created_at": "2025-11-23T10:00:00",
                 "modified_at": "2025-11-23T10:00:00",
@@ -40,7 +40,7 @@ class TestJSONStore:
         loaded = store.load()
 
         assert len(loaded["notes"]) == 1
-        assert loaded["notes"][0]["id"] == "n_20251123_100000_abc"
+        assert loaded["notes"][0]["id"] == "n1"
 
     def test_atomic_write_creates_temp_file(self, temp_data_dir: Path) -> None:
         """Test that save uses atomic write with temp file."""

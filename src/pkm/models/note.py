@@ -9,7 +9,7 @@ class Note(BaseModel):
     """A note capturing information, lecture notes, ideas, or references.
     
     Attributes:
-        id: Unique identifier (e.g., "n_20251123_103045_abc")
+        id: Unique identifier (e.g., "n1", "n42")
         content: Note body text (multi-line supported)
         created_at: Timestamp when note was created
         modified_at: Last modification timestamp
@@ -18,7 +18,7 @@ class Note(BaseModel):
         linked_from_tasks: Task IDs that reference this note
     """
 
-    id: str = Field(..., pattern=r"^n_\d{8}_\d{6}_[a-z0-9]{3}$")
+    id: str = Field(..., pattern=r"^n\d+$")
     content: str = Field(..., min_length=1, max_length=10000)
     created_at: datetime
     modified_at: datetime

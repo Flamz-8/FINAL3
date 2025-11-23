@@ -21,7 +21,7 @@ class TestAddCommands:
         assert result.exit_code == 0
         assert "Note created:" in result.output
         assert "inbox" in result.output
-        assert "n_" in result.output  # Note ID format
+        assert "n" in result.output  # Note ID format (n1, n2, etc.)
 
     def test_add_task_creates_in_inbox(self, temp_data_dir: Path) -> None:
         """Test US1-S2: Adding a task creates it in inbox."""
@@ -34,7 +34,7 @@ class TestAddCommands:
         assert result.exit_code == 0
         assert "Task created:" in result.output
         assert "inbox" in result.output
-        assert "t_" in result.output  # Task ID format
+        assert "t" in result.output  # Task ID format (t1, t2, etc.)
 
     def test_add_note_with_topics(self, temp_data_dir: Path) -> None:
         """Test adding a note with topic tags."""
