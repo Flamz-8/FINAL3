@@ -110,38 +110,38 @@
 
 ### Utilities for US2
 
-- [ ] T040 [P] [US2] Create `src/pkm/utils/__init__.py`
-- [ ] T041 [US2] Create `src/pkm/utils/date_parser.py` with natural language date parsing using python-dateutil (per research.md § Decision 7, supports "tomorrow", "next Friday", "2025-12-01")
-- [ ] T042 [US2] Create `src/pkm/utils/config.py` for data directory management
+- [X] T040 [P] [US2] Create `src/pkm/utils/__init__.py`
+- [X] T041 [US2] Create `src/pkm/utils/date_parser.py` with natural language date parsing using python-dateutil (per research.md § Decision 7, supports "tomorrow", "next Friday", "2025-12-01")
+- [X] T042 [US2] Create `src/pkm/utils/config.py` for data directory management
 
 ### Enhanced Services for US2
 
-- [ ] T043 [US2] Add date filtering methods to `src/pkm/services/task_service.py`:
+- [X] T043 [US2] Add date filtering methods to `src/pkm/services/task_service.py`:
       - `get_tasks_today()` - filters tasks with due_date == today
       - `get_tasks_this_week()` - filters tasks with due_date within 7 days
       - `get_tasks_overdue()` - filters tasks with due_date < today and not completed
-- [ ] T044 [US2] Add `complete_task(task_id)` method to `src/pkm/services/task_service.py` (sets completed=True, completed_at=now())
+- [X] T044 [US2] Add `complete_task(task_id)` method to `src/pkm/services/task_service.py` (sets completed=True, completed_at=now())
 
 ### CLI Commands for US2
 
-- [ ] T045 [US2] Update `src/pkm/cli/add.py::add_task()` to support `--due` option with date parsing (calls date_parser.py)
-- [ ] T046 [US2] Implement `pkm view tasks` command in `src/pkm/cli/view.py` with `--filter` option (per contracts § pkm view tasks)
-- [ ] T047 [US2] Create `src/pkm/cli/task.py` implementing `pkm task complete` command (per contracts § 4. Task Management Commands)
+- [X] T045 [US2] Update `src/pkm/cli/add.py::add_task()` to support `--due` option with date parsing (calls date_parser.py)
+- [X] T046 [US2] Implement `pkm view tasks` command in `src/pkm/cli/view.py` with `--filter` option (per contracts § pkm view tasks)
+- [X] T047 [US2] Create `src/pkm/cli/task.py` implementing `pkm task complete` command (per contracts § 4. Task Management Commands)
 
 ### Integration Tests for US2 (Write FIRST - TDD)
 
-- [ ] T048 [US2] Write `tests/integration/test_add_commands.py::test_add_task_with_due_date()` validating US2-S1 (MUST FAIL before T045)
-- [ ] T049 [US2] Write `tests/integration/test_view_commands.py` with tests for:
+- [X] T048 [US2] Write `tests/integration/test_add_commands.py::test_add_task_with_due_date()` validating US2-S1 (MUST FAIL before T045)
+- [X] T049 [US2] Write `tests/integration/test_view_commands.py` with tests for:
       - `test_view_today_filters_correctly()` validates US2-S2
       - `test_view_week_filters_correctly()` validates US2-S3
       - `test_view_overdue_shows_past_due()` validates US2-S4
       (MUST FAIL before T046)
-- [ ] T050 [US2] Write `tests/integration/test_task_commands.py::test_task_complete_marks_done()` validating US2-S5 (MUST FAIL before T047)
+- [X] T050 [US2] Write `tests/integration/test_task_commands.py::test_task_complete_marks_done()` validating US2-S5 (MUST FAIL before T047)
 - [ ] T051 [P] [US2] Create `tests/edge_cases/test_invalid_dates.py` testing FR-021 (MUST FAIL before T041)
 
 ### Unit Tests for US2
 
-- [ ] T052 [P] [US2] Write `tests/unit/test_utils.py::test_date_parser_natural_language()` with edge cases from spec.md (MUST FAIL before T041)
+- [X] T052 [P] [US2] Write `tests/unit/test_date_parser.py::test_date_parser_natural_language()` with edge cases from spec.md (MUST FAIL before T041)
 
 **Checkpoint**: User Story 2 complete - Can create tasks with due dates, view filtered lists, mark tasks complete. Run `uv run pytest tests/integration/test_task_commands.py` - all tests PASS
 
@@ -155,29 +155,29 @@
 
 ### Enhanced Services for US3
 
-- [ ] T053 [US3] Add `organize_note(note_id, course)` method to `src/pkm/services/note_service.py` (updates note.course, auto-creates Course if needed)
-- [ ] T054 [US3] Add `organize_task(task_id, course)` method to `src/pkm/services/task_service.py`
-- [ ] T055 [US3] Add course filtering methods to services:
+- [X] T053 [US3] Add `organize_note(note_id, course)` method to `src/pkm/services/note_service.py` (updates note.course, auto-creates Course if needed)
+- [X] T054 [US3] Add `organize_task(task_id, course)` method to `src/pkm/services/task_service.py`
+- [X] T055 [US3] Add course filtering methods to services:
       - `get_notes_by_course(course_name)` in note_service.py
       - `get_tasks_by_course(course_name)` in task_service.py
-- [ ] T056 [US3] Create `src/pkm/services/course_service.py` with `list_courses()` method returning all courses with counts
+- [X] T056 [US3] Create `src/pkm/services/course_service.py` with `list_courses()` method returning all courses with counts
 
 ### CLI Commands for US3
 
-- [ ] T057 [P] [US3] Create `src/pkm/cli/organize.py` implementing `pkm organize note` command (per contracts § 3. Organization Commands)
-- [ ] T058 [P] [US3] Implement `pkm organize task` command in `src/pkm/cli/organize.py`
-- [ ] T059 [US3] Update `src/pkm/cli/add.py` to support `--course` option for direct assignment (US3-S2)
-- [ ] T060 [US3] Implement `pkm view course` command in `src/pkm/cli/view.py` (per contracts § pkm view course)
-- [ ] T061 [US3] Implement `pkm list courses` command in `src/pkm/cli/view.py` (not in contracts, but needed for US3-S5)
+- [X] T057 [P] [US3] Create `src/pkm/cli/organize.py` implementing `pkm organize note` command (per contracts § 3. Organization Commands)
+- [X] T058 [P] [US3] Implement `pkm organize task` command in `src/pkm/cli/organize.py`
+- [X] T059 [US3] Update `src/pkm/cli/add.py` to support `--course` option for direct assignment (US3-S2)
+- [X] T060 [US3] Implement `pkm view course` command in `src/pkm/cli/view.py` (per contracts § pkm view course)
+- [X] T061 [US3] Implement `pkm list courses` command in `src/pkm/cli/view.py` (not in contracts, but needed for US3-S5)
 
 ### Integration Tests for US3 (Write FIRST - TDD)
 
-- [ ] T062 [P] [US3] Create `tests/integration/test_organize_commands.py` with tests for:
+- [X] T062 [P] [US3] Create `tests/integration/test_organize_commands.py` with tests for:
       - `test_organize_note_moves_to_course()` validates US3-S1
       - `test_organize_task_moves_to_course()` validates similar pattern
       (MUST FAIL before T057-T058)
-- [ ] T063 [US3] Write `tests/integration/test_add_commands.py::test_add_task_directly_to_course()` validating US3-S2 (MUST FAIL before T059)
-- [ ] T064 [US3] Write `tests/integration/test_view_commands.py` with tests for:
+- [X] T063 [US3] Write `tests/integration/test_add_commands.py::test_add_task_directly_to_course()` validating US3-S2 (MUST FAIL before T059)
+- [X] T064 [US3] Write `tests/integration/test_view_commands.py` with tests for:
       - `test_view_course_shows_all_items()` validates US3-S3
       - `test_view_tasks_filtered_by_course()` validates US3-S4
       - `test_list_courses_shows_all()` validates US3-S5
@@ -216,7 +216,7 @@
 
 ### Integration Tests for US4 (Write FIRST - TDD)
 
-- [ ] T074 [US4] Write `tests/integration/test_organize_commands.py::test_organize_note_adds_topics()` validating US4-S1 (MUST FAIL before T069)
+- [X] T074 [US4] Write `tests/integration/test_organize_commands.py::test_organize_note_adds_topics()` validating US4-S1 (MUST FAIL before T069)
 - [ ] T075 [US4] Write `tests/integration/test_add_commands.py::test_edit_note_opens_editor()` validating US4-S2 (MUST FAIL before T070)
 - [ ] T076 [US4] Write `tests/integration/test_view_commands.py` with tests for:
       - `test_view_notes_filtered_by_course_and_topic()` validates US4-S3
@@ -251,7 +251,7 @@
 
 ### Integration Tests for US8 (Write FIRST - TDD)
 
-- [ ] T085 [US8] Write `tests/integration/test_help_commands.py` with tests for:
+- [X] T085 [US8] Write `tests/integration/test_help_commands.py` with tests for:
       - `test_first_run_shows_onboarding()` validates US8-S1
       - `test_help_lists_commands()` validates US8-S2
       - `test_help_add_shows_examples()` validates US8-S3
@@ -271,16 +271,16 @@
 
 ### Services for US5
 
-- [ ] T086 [US5] Create `src/pkm/services/search_service.py` with `search(query, type_filter, course_filter, topic_filter)` method implementing case-insensitive substring matching with relevance scoring
+- [X] T086 [US5] Create `src/pkm/services/search_service.py` with `search(query, type_filter, course_filter, topic_filter)` method implementing case-insensitive substring matching with relevance scoring
 
 ### CLI Commands for US5
 
-- [ ] T087 [US5] Create `src/pkm/cli/search.py` implementing `pkm search` command with all filters (per contracts § 5. Search Commands)
-- [ ] T088 [US5] Add search result highlighting using rich library in `src/pkm/cli/helpers.py`
+- [X] T087 [US5] Create `src/pkm/cli/search.py` implementing `pkm search` command with all filters (per contracts § 5. Search Commands)
+- [X] T088 [US5] Add search result highlighting using rich library in `src/pkm/cli/helpers.py`
 
 ### Integration Tests for US5 (Write FIRST - TDD)
 
-- [ ] T089 [US5] Write `tests/integration/test_search_commands.py` with tests for:
+- [X] T089 [US5] Write `tests/integration/test_search_commands.py` with tests for:
       - `test_search_finds_matching_items()` validates US5-S1
       - `test_search_filtered_by_course()` validates US5-S2
       - `test_search_filtered_by_topic()` validates US5-S3
@@ -315,13 +315,13 @@
 
 ### Integration Tests for US6 (Write FIRST - TDD)
 
-- [ ] T097 [US6] Write `tests/integration/test_task_commands.py` with tests for:
+- [X] T097 [US6] Write `tests/integration/test_task_commands.py` with tests for:
       - `test_link_note_to_task()` validates US6-S1
       - `test_view_task_shows_linked_notes()` validates US6-S2
       - `test_view_task_expand_shows_note_content()` validates US6-S3
       - `test_unlink_note_from_task()` validates US6-S4
       (MUST FAIL before T092-T095)
-- [ ] T098 [US6] Write `tests/integration/test_view_commands.py::test_view_note_shows_referencing_tasks()` validating US6-S5 (MUST FAIL before T096)
+- [X] T098 [US6] Write `tests/integration/test_view_commands.py::test_view_note_shows_referencing_tasks()` validating US6-S5 (MUST FAIL before T096)
 - [ ] T099 [P] [US6] Write `tests/unit/test_services.py::test_bidirectional_link_sync()` validating data-model.md integrity rules (MUST FAIL before T090-T091)
 
 **Checkpoint**: User Story 6 complete - Note-task linking working. Run `uv run pytest tests/integration/test_task_commands.py` - all tests PASS
@@ -336,24 +336,24 @@
 
 ### Enhanced Services for US7
 
-- [ ] T100 [US7] Add subtask methods to `src/pkm/services/task_service.py`:
+- [X] T100 [US7] Add subtask methods to `src/pkm/services/task_service.py`:
       - `add_subtask(task_id, title)` method (generates subtask.id = max(existing) + 1 per data-model.md § Task → Subtasks)
       - `complete_subtask(task_id, subtask_id)` method
       - `get_subtask_progress(task_id)` method returning percentage
-- [ ] T101 [US7] Add `get_tasks_by_priority(priority)` method to `src/pkm/services/task_service.py`
+- [X] T101 [US7] Add `get_tasks_by_priority(priority)` method to `src/pkm/services/task_service.py`
 
 ### CLI Commands for US7
 
-- [ ] T102 [US7] Update `src/pkm/cli/add.py::add_task()` to support `--priority` option (US7-S1, already in contracts)
-- [ ] T103 [US7] Implement `pkm task add-subtask` command in `src/pkm/cli/task.py` (US7-S2, per contracts § pkm task add-subtask)
-- [ ] T104 [US7] Update `pkm view task` to show subtask progress (US7-S3)
-- [ ] T105 [US7] Implement `pkm task complete-subtask` command in `src/pkm/cli/task.py` (US7-S4, per contracts § pkm task complete-subtask)
-- [ ] T106 [US7] Update `pkm view tasks` to support `--priority` filter (US7-S5)
+- [X] T102 [US7] Update `src/pkm/cli/add.py::add_task()` to support `--priority` option (US7-S1, already in contracts)
+- [X] T103 [US7] Implement `pkm task add-subtask` command in `src/pkm/cli/task.py` (US7-S2, per contracts § pkm task add-subtask)
+- [X] T104 [US7] Update `pkm view task` to show subtask progress (US7-S3)
+- [X] T105 [US7] Implement `pkm task complete-subtask` command in `src/pkm/cli/task.py` (US7-S4, per contracts § pkm task complete-subtask)
+- [X] T106 [US7] Update `pkm view tasks` to support `--priority` filter (US7-S5)
 - [ ] T107 [US7] Add suggestion when all subtasks complete to mark parent task done (US7-S6)
 
 ### Integration Tests for US7 (Write FIRST - TDD)
 
-- [ ] T108 [US7] Write `tests/integration/test_task_commands.py` with tests for:
+- [X] T108 [US7] Write `tests/integration/test_task_commands.py` with tests for:
       - `test_add_task_with_high_priority()` validates US7-S1
       - `test_add_subtask_to_task()` validates US7-S2
       - `test_view_task_shows_subtask_progress()` validates US7-S3
