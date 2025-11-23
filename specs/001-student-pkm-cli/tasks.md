@@ -19,18 +19,18 @@
 
 **Purpose**: Project initialization and basic Python structure
 
-- [ ] T001 Initialize uv project with `uv init` in repository root, create `pyproject.toml` with Python 3.11+ requirement
-- [ ] T002 [P] Add dependencies to `pyproject.toml`: click, pydantic, rich, python-dateutil (per research.md § Decision 1-7)
-- [ ] T003 [P] Add dev dependencies to `pyproject.toml`: pytest, pytest-cov, hypothesis, mypy, ruff (per plan.md § Constitution Check)
-- [ ] T004 [P] Create `.python-version` file with content `3.11`
-- [ ] T005 [P] Create `src/pkm/__init__.py` and `src/pkm/__main__.py` entry point
-- [ ] T006 [P] Create `tests/__init__.py` and `tests/conftest.py` with pytest fixtures
-- [ ] T007 [P] Configure ruff in `pyproject.toml` (complexity ≤10, line length 100)
-- [ ] T008 [P] Configure mypy in `pyproject.toml` with strict mode enabled
-- [ ] T009 [P] Configure pytest in `pyproject.toml` with coverage settings (≥80% threshold)
-- [ ] T010 [P] Create `.gitignore` with Python patterns (\_\_pycache\_\_, .venv, *.pyc, .pytest_cache, .mypy_cache, uv.lock)
-- [ ] T011 [P] Create `README.md` with installation and quickstart instructions (reference quickstart.md)
-- [ ] T012 Run `uv sync` to install all dependencies and create lockfile
+- [X] T001 Initialize uv project with `uv init` in repository root, create `pyproject.toml` with Python 3.11+ requirement
+- [X] T002 [P] Add dependencies to `pyproject.toml`: click, pydantic, rich, python-dateutil (per research.md § Decision 1-7)
+- [X] T003 [P] Add dev dependencies to `pyproject.toml`: pytest, pytest-cov, hypothesis, mypy, ruff (per plan.md § Constitution Check)
+- [X] T004 [P] Create `.python-version` file with content `3.11`
+- [X] T005 [P] Create `src/pkm/__init__.py` and `src/pkm/__main__.py` entry point
+- [X] T006 [P] Create `tests/__init__.py` and `tests/conftest.py` with pytest fixtures
+- [X] T007 [P] Configure ruff in `pyproject.toml` (complexity ≤10, line length 100)
+- [X] T008 [P] Configure mypy in `pyproject.toml` with strict mode enabled
+- [X] T009 [P] Configure pytest in `pyproject.toml` with coverage settings (≥80% threshold)
+- [X] T010 [P] Create `.gitignore` with Python patterns (\_\_pycache\_\_, .venv, *.pyc, .pytest_cache, .mypy_cache, uv.lock)
+- [X] T011 [P] Create `README.md` with installation and quickstart instructions (reference quickstart.md)
+- [X] T012 Run `uv sync` to install all dependencies and create lockfile
 
 **Checkpoint**: Project structure initialized - `uv run python -m pkm --help` should work (even if empty)
 
@@ -44,23 +44,23 @@
 
 ### Models & Storage (Can parallelize within this subsection)
 
-- [ ] T013 [P] Create `src/pkm/models/__init__.py`
-- [ ] T014 [P] Create `src/pkm/models/common.py` with shared types (ID generation function per data-model.md § ID Generation Strategy)
-- [ ] T015 [P] Create `src/pkm/models/note.py` implementing Note Pydantic model (per data-model.md § 1. Note)
-- [ ] T016 [P] Create `src/pkm/models/task.py` implementing Task and Subtask Pydantic models (per data-model.md § 2. Task, § 3. Subtask)
-- [ ] T017 [P] Create `src/pkm/models/course.py` implementing Course Pydantic model (per data-model.md § 4. Course)
-- [ ] T018 [P] Create `src/pkm/storage/__init__.py`
-- [ ] T019 [P] Create `src/pkm/storage/schema.py` with JSON schema structure (per data-model.md § Data Storage Schema)
-- [ ] T020 Create `src/pkm/storage/json_store.py` with atomic write operations (write to .tmp → rename, backup to .bak per data-model.md § Data Integrity Rules)
-- [ ] T021 [P] Create `src/pkm/storage/migrations.py` with version handling (per data-model.md § Migration Strategy)
+- [X] T013 [P] Create `src/pkm/models/__init__.py`
+- [X] T014 [P] Create `src/pkm/models/common.py` with shared types (ID generation function per data-model.md § ID Generation Strategy)
+- [X] T015 [P] Create `src/pkm/models/note.py` implementing Note Pydantic model (per data-model.md § 1. Note)
+- [X] T016 [P] Create `src/pkm/models/task.py` implementing Task and Subtask Pydantic models (per data-model.md § 2. Task, § 3. Subtask)
+- [X] T017 [P] Create `src/pkm/models/course.py` implementing Course Pydantic model (per data-model.md § 4. Course)
+- [X] T018 [P] Create `src/pkm/storage/__init__.py`
+- [X] T019 [P] Create `src/pkm/storage/schema.py` with JSON schema structure (per data-model.md § Data Storage Schema)
+- [X] T020 Create `src/pkm/storage/json_store.py` with atomic write operations (write to .tmp → rename, backup to .bak per data-model.md § Data Integrity Rules)
+- [X] T021 [P] Create `src/pkm/storage/migrations.py` with version handling (per data-model.md § Migration Strategy)
 
 ### Unit Tests for Foundation (Write FIRST - TDD)
 
-- [ ] T022 [P] Create `tests/unit/__init__.py`
-- [ ] T023 [P] Write `tests/unit/test_models.py` validating all Pydantic models against data-model.md examples (MUST FAIL before T015-T017)
-- [ ] T024 [P] Write `tests/unit/test_storage.py` testing atomic writes, backup creation, corruption recovery (MUST FAIL before T020)
-- [ ] T025 [P] Create `tests/edge_cases/__init__.py`
-- [ ] T026 [P] Write `tests/edge_cases/test_corrupted_data.py` testing FR-024 (MUST FAIL before T020-T021)
+- [X] T022 [P] Create `tests/unit/__init__.py`
+- [X] T023 [P] Write `tests/unit/test_models.py` validating all Pydantic models against data-model.md examples (MUST FAIL before T015-T017)
+- [X] T024 [P] Write `tests/unit/test_storage.py` testing atomic writes, backup creation, corruption recovery (MUST FAIL before T020)
+- [X] T025 [P] Create `tests/edge_cases/__init__.py`
+- [X] T026 [P] Write `tests/edge_cases/test_corrupted_data.py` testing FR-024 (MUST FAIL before T020-T021)
 
 **Checkpoint**: Run `uv run pytest tests/unit/test_models.py` - all model tests should PASS now
 
