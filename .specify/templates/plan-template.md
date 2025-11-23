@@ -31,7 +31,35 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Validate this feature against constitution principles (`.specify/memory/constitution.md`):
+
+**I. Code Quality First**:
+- [ ] Linting/formatting tools configured for this feature's tech stack
+- [ ] Code complexity limits defined (cyclomatic complexity ≤10)
+- [ ] Public API documentation requirements understood
+- [ ] Type safety approach determined (strict typing where applicable)
+
+**II. Testing Standards**:
+- [ ] Test-first workflow planned (tests before implementation)
+- [ ] Test categories identified: Unit, Integration, Contract, Edge Cases
+- [ ] Coverage targets defined (≥80% line coverage, 100% for critical paths)
+- [ ] Test independence verified (no shared state between tests)
+
+**III. User Experience Consistency**:
+- [ ] Response time budgets defined (100ms acknowledge, 1s p95 complete)
+- [ ] Error message standards established (human-readable, actionable, consistent)
+- [ ] Accessibility requirements identified (WCAG 2.1 AA, keyboard nav, screen readers)
+- [ ] Design system components identified (if UI feature)
+- [ ] Loading states and offline behavior planned
+
+**IV. Performance Requirements**:
+- [ ] Performance budgets defined (latency p50/p95/p99, memory, CPU, payload sizes)
+- [ ] Performance testing approach planned (load tests, stress tests, profiling)
+- [ ] Monitoring strategy defined (metrics, alerts, thresholds)
+- [ ] Database performance considerations (query plans, indexes, N+1 prevention)
+
+**Violations Requiring Justification**: (if any, document in Complexity Tracking below)
+
 
 ## Project Structure
 
