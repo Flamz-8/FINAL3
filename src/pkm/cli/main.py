@@ -48,6 +48,8 @@ def cli(ctx: click.Context, data_dir: str | None, no_color: bool, verbose: bool)
 from pkm.cli import add  # noqa: E402
 from pkm.cli import view  # noqa: E402
 from pkm.cli import task  # noqa: E402
+from pkm.cli import organize  # noqa: E402
+from pkm.cli import search  # noqa: E402
 
 
 if __name__ == "__main__":

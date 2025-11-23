@@ -220,3 +220,50 @@ class TaskService:
                 return None
         
         return None
+
+    def organize_task(self, task_id: str, course: str) -> Task | None:
+        """Assign a task to a course (move from inbox).
+        
+        Args:
+            task_id: Task ID to organize
+            course: Course name to assign
+            
+        Returns:
+            Updated task if found, None otherwise
+        """
+        data = self.store.load()
+        
+        for i, task_data in enumerate(data["tasks"]):
+            if task_data["id"] == task_id:
+                task = deserialize_task(task_data)
+                task.course = course
+                
+                # Update in storage
+                data["tasks"][i] = serialize_task(task)
+                self.store.save(data)
+                
+                return task
+        
+        return None
+
+    def get_tasks_by_course(self, course_name: str) -> list[Task]:
+        """Get all tasks for a specific course.
+        
+        Args:
+            course_name: Course name to filter by
+            
+        Returns:
+            List of tasks in the course
+        """
+        return [task for task in self.list_tasks() if task.course == course_name]
+
+    def get_tasks_by_priority(self, priority: str) -> list[Task]:
+        """Get all tasks with a specific priority.
+        
+        Args:
+            priority: Priority level (high, medium, low)
+            
+        Returns:
+            List of tasks with the priority
+        """
+        return [task for task in self.list_tasks() if task.priority == priority and not task.completed]

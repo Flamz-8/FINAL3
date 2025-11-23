@@ -99,9 +99,38 @@ Output:
 ┗━━━━━━━━━━┻━━━━━━━━━┻━━━━━━━━┻━━━━━━━━━━━━━━━┛
 ```
 
-### 3️⃣ Organize Later
+### 3️⃣ Organize by Course
 
-*Coming in Phase 4-5*: Organize notes by course and topic after capture.
+Move items from inbox to courses:
+
+```bash
+# Organize a note
+uv run python -m pkm organize note NOTE_ID --course "Biology 101"
+
+# Organize a task
+uv run python -m pkm organize task TASK_ID --course "Math 201"
+
+# View all courses
+uv run python -m pkm view courses
+
+# View a specific course
+uv run python -m pkm view course "Biology 101"
+```
+
+### 4️⃣ Search Everything
+
+Find notes and tasks quickly:
+
+```bash
+# Search everything
+uv run python -m pkm search "photosynthesis"
+
+# Search only notes or tasks
+uv run python -m pkm search "exam" --type notes
+
+# Search within a course
+uv run python -m pkm search "chapter" --course "Biology 101"
+```
 
 ---
 
@@ -114,7 +143,7 @@ Output:
 
 ### ✅ Tasks
 - **Purpose**: Track assignments, todos, and deadlines
-- **Features**: Priority levels, due dates (coming soon), subtasks (coming soon)
+- **Features**: Priority levels, natural language due dates, subtasks with progress tracking
 - **Inbox**: Tasks without a course live in your inbox
 
 ### 📚 Courses
@@ -256,23 +285,79 @@ Default data location: `~/.pkm/data.json`
 
 ---
 
+### Organizing Your Data
+
+#### Organize Notes and Tasks
+```bash
+# Move a note to a course
+uv run python -m pkm organize note NOTE_ID --course "Biology 101"
+
+# Move a task to a course
+uv run python -m pkm organize task TASK_ID --course "Math 201"
+
+# Add topics while organizing
+uv run python -m pkm organize note NOTE_ID \\
+  --course "Biology 101" \\
+  --add-topics "Photosynthesis"
+```
+
+#### View by Course
+```bash
+# List all courses
+uv run python -m pkm view courses
+
+# View everything in a course
+uv run python -m pkm view course "Biology 101"
+```
+
+#### Search
+```bash
+# Search everything
+uv run python -m pkm search "mitochondria"
+
+# Search only notes
+uv run python -m pkm search "exam" --type notes
+
+# Search within a course
+uv run python -m pkm search "chapter" --course "Biology 101"
+
+# Search by topic
+uv run python -m pkm search "cell" --topic "Biology"
+```
+
+---
+
 ## Implementation Status
 
-### ✅ Currently Working (Phase 1-4)
+### ✅ Currently Working (Phase 1-5, 8)
 
 - **Quick Capture**
   - `pkm add note` - Add notes with content
-  - `pkm add task` - Add tasks with priority
+  - `pkm add task` - Add tasks with priority and due dates
   - Topic tagging with `--topics`
   - Course assignment with `--course`
-  - **NEW: Due dates** with natural language parsing (`--due "tomorrow"`)
+  - Natural language due dates (`--due "tomorrow"`)
 
 - **Task Management**
-  - **NEW: Due date parsing** - "tomorrow", "next Friday", "2025-12-01", "Friday 11:59pm"
-  - **NEW: Subtasks/Bullet Points** - Break down tasks into steps
-  - **NEW: Task completion** - Mark tasks and subtasks as done
-  - **NEW: Filtered views** - `view today`, `view week`, `view overdue`
+  - Due date parsing - "tomorrow", "next Friday", "2025-12-01", "Friday 11:59pm"
+  - Subtasks/Bullet Points - Break down tasks with progress tracking
+  - Task completion - Mark tasks and subtasks as done
+  - Filtered views - `view today`, `view week`, `view overdue`
   - Priority levels (high, medium, low)
+
+- **Course Organization**
+  - `pkm organize note` - Move notes to courses
+  - `pkm organize task` - Move tasks to courses
+  - `pkm view courses` - List all courses with counts
+  - `pkm view course` - View all items in a specific course
+  - Automatic course creation when organizing
+
+- **Search**
+  - `pkm search` - Full-text search across notes and tasks
+  - Filter by type (notes/tasks)
+  - Filter by course
+  - Filter by topic (notes only)
+  - Case-insensitive substring matching
 
 - **Inbox Management**
   - `pkm view inbox` - View unorganized items with due dates and subtask progress
@@ -284,19 +369,22 @@ Default data location: `~/.pkm/data.json`
   - Atomic writes with automatic backup
   - Corruption recovery
 
-### ⏳ Coming Soon (Phase 5+)
+### ⏳ Coming Soon (Phase 6-7, 9-10)
 
-- **Organization** (Phase 5-6)
-  - `pkm organize note` - Move notes to courses
-  - `pkm organize task` - Move tasks to courses
-  - `pkm view course` - View all items in a course
-  - Note editing and deletion
+- **Note Management** (Phase 6)
+  - Note editing with external editor
+  - Note deletion
+  - Topic management
 
-- **Advanced Features** (Phase 7-10)
-  - Help system and onboarding
-  - Full-text search across notes and tasks
-  - Note-task linking
-  - Performance optimization
+- **Note-Task Linking** (Phase 9)
+  - Link notes to tasks for context
+  - View linked notes from tasks
+  - Bidirectional references
+
+- **Help & Onboarding** (Phase 7)
+  - First-run tutorial
+  - Command-specific help with examples
+  - Error suggestions
 
 ---
 
@@ -322,6 +410,12 @@ Categorize notes with multiple tags for easy retrieval
 
 ### 🔍 Filtered Views
 See tasks due today, this week, or overdue at a glance
+
+### 🔎 Full-Text Search
+Quickly find any note or task across your entire knowledge base
+
+### 📊 Course Organization
+Group and view all notes and tasks by academic subject
 
 ### 🔗 Note-Task Linking *(Coming Soon)*
 Reference notes from tasks for context
@@ -364,6 +458,19 @@ pkm view inbox         # Show unorganized notes and tasks
 pkm view today         # Tasks due today
 pkm view week          # Tasks due this week (next 7 days)
 pkm view overdue       # Past-due incomplete tasks
+pkm view courses       # List all courses
+pkm view course NAME   # View items in a specific course
+```
+
+### Organize Commands
+```bash
+pkm organize note NOTE_ID --course NAME     # Move note to course
+pkm organize task TASK_ID --course NAME     # Move task to course
+```
+
+### Search Command
+```bash
+pkm search QUERY [--type notes|tasks] [--course NAME] [--topic NAME]
 ```
 
 ### Help

@@ -11,6 +11,7 @@ from pkm.cli.helpers import create_table, format_datetime, info, truncate
 from pkm.cli.main import cli
 from pkm.services.note_service import NoteService
 from pkm.services.task_service import TaskService
+from pkm.services.course_service import CourseService
 from pkm.utils.date_parser import format_due_date
 
 
@@ -312,3 +313,126 @@ def view_overdue(ctx: click.Context) -> None:
     
     Console().print(table)
     info(f"[red]Total: {len(tasks)} overdue tasks[/red]")
+
+
+@view.command(name="course")
+@click.argument("course_name", required=True)
+@click.pass_context
+def view_course(ctx: click.Context, course_name: str) -> None:
+    """View all notes and tasks for a specific course.
+    
+    \b
+    COURSE_NAME: The course name (use quotes if it contains spaces)
+    
+    \b
+    Shows:
+      - All notes in the course
+      - All tasks in the course
+      - Grouped and formatted with rich tables
+    
+    \b
+    Examples:
+      # View a course
+      pkm view course "Biology 101"
+      
+      # View course without spaces
+      pkm view course Math201
+    
+    This helps you see all content related to a specific class.
+    """
+    data_dir = get_data_dir(ctx)
+    note_service = NoteService(data_dir)
+    task_service = TaskService(data_dir)
+    
+    notes = note_service.get_notes_by_course(course_name)
+    tasks = task_service.get_tasks_by_course(course_name)
+    
+    if not notes and not tasks:
+        info(f"No items found in course '{course_name}'")
+        return
+    
+    Console().print(f"\n[bold]📚 {course_name}[/bold]")
+    Console().print()
+    
+    # Display notes
+    if notes:
+        table = create_table(f"Notes ({len(notes)})", ["Content", "Created", "Topics"])
+        for note in notes[:10]:  # Show first 10
+            table.add_row(
+                truncate(note.content, 50),
+                format_datetime(note.created_at),
+                ", ".join(note.topics) if note.topics else "-",
+            )
+        Console().print(table)
+        if len(notes) > 10:
+            info(f"Showing 10 of {len(notes)} notes")
+        Console().print()
+    
+    # Display tasks
+    if tasks:
+        table = create_table(f"Tasks ({len(tasks)})", ["Title", "Due", "Priority", "Status"])
+        for task in tasks:
+            priority_color = {
+                "high": "[red]HIGH[/red]",
+                "medium": "[yellow]MED[/yellow]",
+                "low": "[green]LOW[/green]",
+            }[task.priority]
+            
+            due_display = format_due_date(task.due_date) if task.due_date else "-"
+            status = "✓ Done" if task.completed else "Active"
+            
+            table.add_row(
+                truncate(task.title, 40),
+                truncate(due_display, 25),
+                priority_color,
+                status,
+            )
+        Console().print(table)
+        Console().print()
+    
+    info(f"Total: {len(notes)} notes, {len(tasks)} tasks")
+
+
+@view.command(name="courses")
+@click.pass_context
+def view_courses(ctx: click.Context) -> None:
+    """List all courses with note and task counts.
+    
+    \b
+    Shows:
+      - All courses in your system
+      - Number of notes per course
+      - Number of tasks per course
+    
+    \b
+    Examples:
+      # List all courses
+      pkm view courses
+    
+    Use this to see all your classes and their content at a glance.
+    """
+    data_dir = get_data_dir(ctx)
+    course_service = CourseService(data_dir)
+    
+    courses = course_service.list_courses()
+    
+    if not courses:
+        info("No courses found. Organize notes and tasks to create courses.")
+        return
+    
+    table = create_table(f"Courses ({len(courses)})", ["Course", "Notes", "Tasks", "Total Items"])
+    
+    for course in courses:
+        total = course.note_count + course.task_count
+        table.add_row(
+            course.name,
+            str(course.note_count),
+            str(course.task_count),
+            str(total),
+        )
+    
+    Console().print(table)
+    
+    total_notes = sum(c.note_count for c in courses)
+    total_tasks = sum(c.task_count for c in courses)
+    info(f"Total: {len(courses)} courses, {total_notes} notes, {total_tasks} tasks")
