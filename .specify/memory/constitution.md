@@ -1,34 +1,30 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version Change: Initial → 1.0.0
-Change Type: MAJOR - Initial constitution establishment
-Modified Principles: N/A (new constitution)
-Added Sections:
-  - Core Principles (4 principles: Code Quality, Testing Standards, User Experience Consistency, Performance Requirements)
-  - Development Standards
-  - Technical Decisions
-  - Governance
+Version Change: 1.0.0 → 1.0.1
+Change Type: PATCH - Clarification of documentation requirements
+Modified Principles:
+  - I. Code Quality First - Added explicit user documentation requirement
+
+Added Requirements:
+  - User documentation MUST be created and kept up-to-date with every feature release
+  - Code review checklist now includes user documentation verification
 
 Templates Status:
-  ✅ plan-template.md - Constitution Check section updated with concrete validation gates for all 4 principles
-  ✅ spec-template.md - Requirements sections align with quality/UX principles (no changes needed)
-  ✅ tasks-template.md - Task categorization supports test-first and quality gates (no changes needed)
-  ✅ checklist-template.md - Generic template compatible with constitution-driven checklists (no changes needed)
-  ✅ agent-file-template.md - Generic template compatible (no changes needed)
+  ✅ plan-template.md - No changes needed (already supports documentation planning)
+  ✅ spec-template.md - No changes needed (already captures user scenarios)
+  ✅ tasks-template.md - No changes needed (can include documentation tasks)
+  ⚠️ Future consideration: Add documentation template for user-facing guides
 
 Agent Files Status:
-  ✅ speckit.plan.agent.md - Already references constitution.md for Constitution Check
-  ✅ speckit.analyze.agent.md - Already enforces constitution compliance as CRITICAL
-  ✅ speckit.implement.agent.md - Already validates against constitution principles
-  ✅ All other agents - No constitution-specific references requiring updates
+  ✅ All agents - No changes needed (documentation tasks can be included in task breakdowns)
 
 Follow-up Actions:
-  - None required - All templates and agents are aligned with new constitution
-  - Future checklists can leverage constitution principles for validation items
-  - Agents will automatically enforce the 4 core principles during execution
+  - Reviewers should verify user documentation is updated during PR reviews
+  - Consider adding documentation task template in future
+  - README, usage guides, and troubleshooting docs must accompany features
 
-Rationale: MAJOR version (1.0.0) - First official constitution establishing foundational governance for code quality, testing, UX, and performance
+Rationale: PATCH version (1.0.1) - Clarification that user documentation is a mandatory quality standard, not optional. This prevents undocumented features and reduces support burden.
 -->
 
 # SpecKit Constitution
@@ -46,8 +42,9 @@ Rationale: MAJOR version (1.0.0) - First official constitution establishing foun
 - Code duplication >5 lines MUST be refactored into reusable components
 - All functions MUST have single, clear responsibilities (Single Responsibility Principle)
 - Type safety MUST be enforced where language supports it (strict typing required)
+- User documentation MUST be created and kept up-to-date with every feature release (installation guides, usage examples, troubleshooting)
 
-**Rationale**: Code quality debt compounds exponentially. Enforcing quality at write-time prevents technical debt accumulation and reduces long-term maintenance costs. Clear, well-documented code enables team scalability and reduces onboarding friction.
+**Rationale**: Code quality debt compounds exponentially. Enforcing quality at write-time prevents technical debt accumulation and reduces long-term maintenance costs. Clear, well-documented code enables team scalability and reduces onboarding friction. User documentation ensures features are discoverable and usable, preventing support burden and user frustration.
 
 ### II. Testing Standards (NON-NEGOTIABLE)
 
@@ -127,6 +124,7 @@ Rationale: MAJOR version (1.0.0) - First official constitution establishing foun
   - ✅ Performance budgets validated (benchmarks pass)
   - ✅ UX consistency verified (design system adherence, error handling)
   - ✅ Edge cases covered
+  - ✅ User documentation updated (README, guides, examples)
 - Self-merging is PROHIBITED unless emergency hotfix (requires post-facto review)
 
 ### Branching & Version Control
@@ -225,4 +223,4 @@ Rationale: MAJOR version (1.0.0) - First official constitution establishing foun
 - Agents MUST block progress when constitution violations detected without justification
 - Agent outputs MUST be validated against quality, testing, UX, and performance standards
 
-**Version**: 1.0.0 | **Ratified**: 2025-11-23 | **Last Amended**: 2025-11-23
+**Version**: 1.0.1 | **Ratified**: 2025-11-23 | **Last Amended**: 2025-11-23
