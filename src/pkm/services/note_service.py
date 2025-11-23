@@ -1,11 +1,11 @@
 """Note service for note management business logic."""
 
+import re
 from datetime import datetime
 from pathlib import Path
-import re
 
-from pkm.models.note import Note
 from pkm.models.common import reset_id_counter
+from pkm.models.note import Note
 from pkm.services.id_generator import generate_note_id
 from pkm.storage.json_store import JSONStore
 from pkm.storage.schema import deserialize_note, serialize_note
@@ -22,12 +22,12 @@ class NoteService:
         """
         self.store = JSONStore(data_dir / "data.json")
         self._initialize_id_counter()
-    
+
     def _initialize_id_counter(self) -> None:
         """Initialize the ID counter based on existing notes."""
         data = self.store.load()
         max_id = 0
-        
+
         for note_data in data.get("notes", []):
             note_id = note_data.get("id", "")
             # Extract number from ID (e.g., "n5" -> 5)
@@ -35,7 +35,7 @@ class NoteService:
             if match:
                 num = int(match.group(1))
                 max_id = max(max_id, num)
-        
+
         reset_id_counter("n", max_id)
 
     def create_note(
@@ -112,18 +112,18 @@ class NoteService:
             Updated note if found, None otherwise
         """
         data = self.store.load()
-        
+
         for i, note_data in enumerate(data["notes"]):
             if note_data["id"] == note_id:
                 note = deserialize_note(note_data)
                 note.course = course
-                
+
                 # Update in storage
                 data["notes"][i] = serialize_note(note)
                 self.store.save(data)
-                
+
                 return note
-        
+
         return None
 
     def get_notes_by_course(self, course_name: str) -> list[Note]:
@@ -159,22 +159,22 @@ class NoteService:
             Updated note if found, None otherwise
         """
         data = self.store.load()
-        
+
         for i, note_data in enumerate(data["notes"]):
             if note_data["id"] == note_id:
                 note = deserialize_note(note_data)
-                
+
                 # Add topics (avoid duplicates)
                 for topic in topics:
                     if topic not in note.topics:
                         note.topics.append(topic)
-                
+
                 # Update in storage
                 data["notes"][i] = serialize_note(note)
                 self.store.save(data)
-                
+
                 return note
-        
+
         return None
 
     def update_note(self, note_id: str, new_content: str) -> Note | None:
@@ -188,19 +188,19 @@ class NoteService:
             Updated note if found, None otherwise
         """
         data = self.store.load()
-        
+
         for i, note_data in enumerate(data["notes"]):
             if note_data["id"] == note_id:
                 note = deserialize_note(note_data)
                 note.content = new_content
                 note.modified_at = datetime.now()
-                
+
                 # Update in storage
                 data["notes"][i] = serialize_note(note)
                 self.store.save(data)
-                
+
                 return note
-        
+
         return None
 
     def remove_topic(self, note_id: str, topic: str) -> Note | None:
@@ -214,21 +214,21 @@ class NoteService:
             Updated note if found, None otherwise
         """
         data = self.store.load()
-        
+
         for i, note_data in enumerate(data["notes"]):
             if note_data["id"] == note_id:
                 note = deserialize_note(note_data)
-                
+
                 # Remove topic if present
                 if topic in note.topics:
                     note.topics.remove(topic)
-                
+
                 # Update in storage
                 data["notes"][i] = serialize_note(note)
                 self.store.save(data)
-                
+
                 return note
-        
+
         return None
 
     def delete_note(self, note_id: str) -> bool:
@@ -241,11 +241,11 @@ class NoteService:
             True if deleted, False if not found
         """
         data = self.store.load()
-        
+
         for i, note_data in enumerate(data["notes"]):
             if note_data["id"] == note_id:
                 del data["notes"][i]
                 self.store.save(data)
                 return True
-        
+
         return False

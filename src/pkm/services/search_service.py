@@ -41,36 +41,36 @@ class SearchService:
         query_lower = query.lower()
         matching_notes: list[Note] = []
         matching_tasks: list[Task] = []
-        
+
         # Search notes
         if type_filter is None or type_filter == "notes":
             all_notes = self.note_service.list_notes()
-            
+
             for note in all_notes:
                 # Apply filters
                 if course_filter and note.course != course_filter:
                     continue
                 if topic_filter and topic_filter not in note.topics:
                     continue
-                
+
                 # Search in content, topics, course
                 if (query_lower in note.content.lower() or
                     any(query_lower in topic.lower() for topic in note.topics) or
                     (note.course and query_lower in note.course.lower())):
                     matching_notes.append(note)
-        
+
         # Search tasks
         if type_filter is None or type_filter == "tasks":
             all_tasks = self.task_service.list_tasks()
-            
+
             for task in all_tasks:
                 # Apply filters
                 if course_filter and task.course != course_filter:
                     continue
-                
+
                 # Search in title, course
                 if (query_lower in task.title.lower() or
                     (task.course and query_lower in task.course.lower())):
                     matching_tasks.append(task)
-        
+
         return matching_notes, matching_tasks

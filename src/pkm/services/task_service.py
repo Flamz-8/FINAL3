@@ -1,11 +1,11 @@
 """Task service for task management business logic."""
 
-from datetime import datetime, date, timedelta
-from pathlib import Path
 import re
+from datetime import date, datetime, timedelta
+from pathlib import Path
 
-from pkm.models.task import Task, Subtask
 from pkm.models.common import reset_id_counter
+from pkm.models.task import Subtask, Task
 from pkm.services.id_generator import generate_task_id
 from pkm.storage.json_store import JSONStore
 from pkm.storage.schema import deserialize_task, serialize_task
@@ -22,12 +22,12 @@ class TaskService:
         """
         self.store = JSONStore(data_dir / "data.json")
         self._initialize_id_counter()
-    
+
     def _initialize_id_counter(self) -> None:
         """Initialize the ID counter based on existing tasks."""
         data = self.store.load()
         max_id = 0
-        
+
         for task_data in data.get("tasks", []):
             task_id = task_data.get("id", "")
             # Extract number from ID (e.g., "t5" -> 5)
@@ -35,7 +35,7 @@ class TaskService:
             if match:
                 num = int(match.group(1))
                 max_id = max(max_id, num)
-        
+
         reset_id_counter("t", max_id)
 
     def create_task(
@@ -130,8 +130,8 @@ class TaskService:
         week_end = today + timedelta(days=7)
         return [
             task for task in self.list_tasks()
-            if task.due_date 
-            and today <= task.due_date.date() <= week_end 
+            if task.due_date
+            and today <= task.due_date.date() <= week_end
             and not task.completed
         ]
 
@@ -144,8 +144,8 @@ class TaskService:
         today = date.today()
         return [
             task for task in self.list_tasks()
-            if task.due_date 
-            and task.due_date.date() < today 
+            if task.due_date
+            and task.due_date.date() < today
             and not task.completed
         ]
 
@@ -159,19 +159,19 @@ class TaskService:
             Updated task if found, None otherwise
         """
         data = self.store.load()
-        
+
         for i, task_data in enumerate(data["tasks"]):
             if task_data["id"] == task_id:
                 task = deserialize_task(task_data)
                 task.completed = True
                 task.completed_at = datetime.now()
-                
+
                 # Update in storage
                 data["tasks"][i] = serialize_task(task)
                 self.store.save(data)
-                
+
                 return task
-        
+
         return None
 
     def add_subtask(self, task_id: str, title: str) -> Task | None:
@@ -185,28 +185,28 @@ class TaskService:
             Updated task if found, None otherwise
         """
         data = self.store.load()
-        
+
         for i, task_data in enumerate(data["tasks"]):
             if task_data["id"] == task_id:
                 task = deserialize_task(task_data)
-                
+
                 # Generate subtask ID (integer)
                 subtask_id = len(task.subtasks) + 1
-                
+
                 subtask = Subtask(
                     id=subtask_id,
                     title=title,
                     completed=False,
                 )
-                
+
                 task.subtasks.append(subtask)
-                
+
                 # Update in storage
                 data["tasks"][i] = serialize_task(task)
                 self.store.save(data)
-                
+
                 return task
-        
+
         return None
 
     def complete_subtask(self, task_id: str, subtask_id: int) -> Task | None:
@@ -220,23 +220,23 @@ class TaskService:
             Updated task if found, None otherwise
         """
         data = self.store.load()
-        
+
         for i, task_data in enumerate(data["tasks"]):
             if task_data["id"] == task_id:
                 task = deserialize_task(task_data)
-                
+
                 for subtask in task.subtasks:
                     if subtask.id == subtask_id:
                         subtask.completed = True
-                        
+
                         # Update in storage
                         data["tasks"][i] = serialize_task(task)
                         self.store.save(data)
-                        
+
                         return task
-                
+
                 return None
-        
+
         return None
 
     def organize_task(self, task_id: str, course: str) -> Task | None:
@@ -250,18 +250,18 @@ class TaskService:
             Updated task if found, None otherwise
         """
         data = self.store.load()
-        
+
         for i, task_data in enumerate(data["tasks"]):
             if task_data["id"] == task_id:
                 task = deserialize_task(task_data)
                 task.course = course
-                
+
                 # Update in storage
                 data["tasks"][i] = serialize_task(task)
                 self.store.save(data)
-                
+
                 return task
-        
+
         return None
 
     def get_tasks_by_course(self, course_name: str) -> list[Task]:
@@ -297,19 +297,19 @@ class TaskService:
             Updated task if found, None otherwise
         """
         data = self.store.load()
-        
+
         # Update task
         for i, task_data in enumerate(data["tasks"]):
             if task_data["id"] == task_id:
                 task = deserialize_task(task_data)
-                
+
                 # Add note to task's linked notes if not already there
                 if note_id not in task.linked_notes:
                     task.linked_notes.append(note_id)
-                
+
                 # Update task in storage
                 data["tasks"][i] = serialize_task(task)
-                
+
                 # Update note's linked_from_tasks (bidirectional)
                 for j, note_data in enumerate(data["notes"]):
                     if note_data["id"] == note_id:
@@ -317,10 +317,10 @@ class TaskService:
                             note_data.setdefault("linked_from_tasks", []).append(task_id)
                         data["notes"][j] = note_data
                         break
-                
+
                 self.store.save(data)
                 return task
-        
+
         return None
 
     def unlink_note(self, task_id: str, note_id: str) -> Task | None:
@@ -334,19 +334,19 @@ class TaskService:
             Updated task if found, None otherwise
         """
         data = self.store.load()
-        
+
         # Update task
         for i, task_data in enumerate(data["tasks"]):
             if task_data["id"] == task_id:
                 task = deserialize_task(task_data)
-                
+
                 # Remove note from task's linked notes
                 if note_id in task.linked_notes:
                     task.linked_notes.remove(note_id)
-                
+
                 # Update task in storage
                 data["tasks"][i] = serialize_task(task)
-                
+
                 # Update note's linked_from_tasks (bidirectional)
                 for j, note_data in enumerate(data["notes"]):
                     if note_data["id"] == note_id:
@@ -356,8 +356,8 @@ class TaskService:
                             note_data["linked_from_tasks"] = linked_tasks
                         data["notes"][j] = note_data
                         break
-                
+
                 self.store.save(data)
                 return task
-        
+
         return None

@@ -3,7 +3,6 @@
 import json
 import shutil
 from pathlib import Path
-from typing import Any
 
 from pkm.storage.schema import DataSchema, create_empty_schema
 

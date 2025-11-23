@@ -4,9 +4,8 @@ from pathlib import Path
 
 import click
 from rich.console import Console
-from rich.panel import Panel
 from rich.markdown import Markdown
-
+from rich.panel import Panel
 
 console = Console()
 
@@ -63,7 +62,7 @@ Your data is stored at ~/.pkm/data.json - completely offline and private!
 
 **Tip**: Start by adding a few notes and tasks, then explore organizing them by course.
 """
-    
+
     md = Markdown(welcome_text)
     panel = Panel(
         md,
@@ -126,13 +125,13 @@ def cli(ctx: click.Context, data_dir: str | None, no_color: bool, verbose: bool)
     ctx.obj["data_dir"] = data_dir
     ctx.obj["no_color"] = no_color
     ctx.obj["verbose"] = verbose
-    
+
     # Check for first run and show onboarding
     if ctx.invoked_subcommand is None:
         # No subcommand - show help or onboarding
         data_path = Path(data_dir) if data_dir else Path.home() / ".pkm"
         data_path.mkdir(parents=True, exist_ok=True)
-        
+
         if check_first_run(data_path):
             show_onboarding()
         else:
@@ -142,13 +141,6 @@ def cli(ctx: click.Context, data_dir: str | None, no_color: bool, verbose: bool)
 
 # Import command groups to register them with the CLI
 # This must happen after cli() is defined
-from pkm.cli import add  # noqa: E402
-from pkm.cli import view  # noqa: E402
-from pkm.cli import task  # noqa: E402
-from pkm.cli import note  # noqa: E402
-from pkm.cli import organize  # noqa: E402
-from pkm.cli import search  # noqa: E402
-from pkm.cli import help  # noqa: E402
 
 
 # Add custom error handling for better user experience

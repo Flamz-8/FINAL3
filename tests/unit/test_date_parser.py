@@ -2,9 +2,7 @@
 
 from datetime import datetime, timedelta
 
-import pytest
-
-from pkm.utils.date_parser import parse_due_date, format_due_date
+from pkm.utils.date_parser import format_due_date, parse_due_date
 
 
 class TestDateParser:
@@ -105,7 +103,7 @@ class TestEdgeCases:
         result1 = parse_due_date("TOMORROW")
         result2 = parse_due_date("tomorrow")
         result3 = parse_due_date("Tomorrow")
-        
+
         assert result1 is not None
         assert result2 is not None
         assert result3 is not None

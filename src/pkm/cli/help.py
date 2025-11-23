@@ -7,7 +7,6 @@ from rich.panel import Panel
 
 from pkm.cli.main import cli, show_onboarding
 
-
 console = Console()
 
 
@@ -92,7 +91,7 @@ def help_commands(ctx: click.Context) -> None:
 - Natural language dates work: `--due "tomorrow"`
 - Chain options: `--priority high --due "next Friday"`
 """
-    
+
     md = Markdown(commands_text)
     panel = Panel(
         md,

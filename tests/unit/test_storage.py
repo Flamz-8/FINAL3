@@ -57,7 +57,7 @@ class TestJSONStore:
     def test_backup_creation(self, temp_data_dir: Path) -> None:
         """Test that backup is created when overwriting existing file."""
         store = JSONStore(temp_data_dir / "data.json")
-        
+
         # Save initial data
         data1 = create_empty_schema()
         data1["notes"].append({"id": "note1", "content": "First version"})
@@ -116,6 +116,6 @@ class TestJSONStore:
     def test_restore_without_backup_fails(self, temp_data_dir: Path) -> None:
         """Test that restore fails when no backup exists."""
         store = JSONStore(temp_data_dir / "data.json")
-        
+
         with pytest.raises(FileNotFoundError):
             store.restore_from_backup()

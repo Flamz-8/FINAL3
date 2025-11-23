@@ -1,12 +1,11 @@
 """Task management commands."""
 
-from pathlib import Path
 
 import click
 
-from pkm.cli.helpers import error, success, info
-from pkm.cli.main import cli
 from pkm.cli.add import get_data_dir
+from pkm.cli.helpers import error, info, success
+from pkm.cli.main import cli
 from pkm.services.task_service import TaskService
 
 
@@ -51,17 +50,17 @@ def complete_task(ctx: click.Context, task_id: str) -> None:
     try:
         data_dir = get_data_dir(ctx)
         service = TaskService(data_dir)
-        
+
         task = service.complete_task(task_id)
-        
+
         if task is None:
             error(f"Task not found: {task_id}")
             ctx.exit(1)
-        
+
         success(f"✓ Task completed: {task.title}")
         if task.completed_at:
             info(f"Completed at: {task.completed_at.strftime('%Y-%m-%d %H:%M')}")
-            
+
     except Exception as e:
         error(f"Failed to complete task: {e}")
         ctx.exit(1)
@@ -93,20 +92,20 @@ def add_subtask(ctx: click.Context, task_id: str, title: str) -> None:
     try:
         data_dir = get_data_dir(ctx)
         service = TaskService(data_dir)
-        
+
         task = service.add_subtask(task_id, title)
-        
+
         if task is None:
             error(f"Task not found: {task_id}")
             ctx.exit(1)
-        
+
         success(f"Subtask added to '{task.title}'")
         info(f"Total subtasks: {len(task.subtasks)}")
-        
+
         # Show progress
         completed = sum(1 for sub in task.subtasks if sub.completed)
         info(f"Progress: {completed}/{len(task.subtasks)} completed")
-            
+
     except Exception as e:
         error(f"Failed to add subtask: {e}")
         ctx.exit(1)
@@ -139,26 +138,26 @@ def check_subtask(ctx: click.Context, task_id: str, subtask_id: int) -> None:
     try:
         data_dir = get_data_dir(ctx)
         service = TaskService(data_dir)
-        
+
         task = service.complete_subtask(task_id, subtask_id)
-        
+
         if task is None:
             error(f"Task or subtask not found: {task_id} / subtask #{subtask_id}")
             ctx.exit(1)
-        
+
         # Find the subtask to show title
         subtask_title = None
         for sub in task.subtasks:
             if sub.id == subtask_id:
                 subtask_title = sub.title
                 break
-        
+
         success(f"✓ Subtask completed: {subtask_title}")
-        
+
         # Show progress
         completed = sum(1 for sub in task.subtasks if sub.completed)
         info(f"Progress: {completed}/{len(task.subtasks)} completed")
-            
+
     except Exception as e:
         error(f"Failed to complete subtask: {e}")
         ctx.exit(1)
@@ -192,29 +191,29 @@ def link_note(ctx: click.Context, task_id: str, note_id: str) -> None:
     try:
         data_dir = get_data_dir(ctx)
         task_service = TaskService(data_dir)
-        
+
         # Import note service to verify note exists
         from pkm.services.note_service import NoteService
         note_service = NoteService(data_dir)
-        
+
         # Verify note exists
         note = note_service.get_note(note_id)
         if note is None:
             error(f"Note not found: {note_id}")
             info("Use 'pkm view inbox' or 'pkm view course' to see note IDs")
             ctx.exit(1)
-        
+
         # Link the note to the task
         task = task_service.link_note(task_id, note_id)
-        
+
         if task is None:
             error(f"Task not found: {task_id}")
             info("Use 'pkm view inbox' or 'pkm view course' to see task IDs")
             ctx.exit(1)
-        
+
         success(f"Note linked to task: {task.title}")
         info(f"Note: {note.content[:50]}..." if len(note.content) > 50 else f"Note: {note.content}")
-            
+
     except Exception as e:
         error(f"Failed to link note: {e}")
         ctx.exit(1)
@@ -238,15 +237,15 @@ def unlink_note(ctx: click.Context, task_id: str, note_id: str) -> None:
     try:
         data_dir = get_data_dir(ctx)
         service = TaskService(data_dir)
-        
+
         task = service.unlink_note(task_id, note_id)
-        
+
         if task is None:
             error(f"Task not found: {task_id}")
             ctx.exit(1)
-        
+
         success(f"Note unlinked from task: {task.title}")
-            
+
     except Exception as e:
         error(f"Failed to unlink note: {e}")
         ctx.exit(1)

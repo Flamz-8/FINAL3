@@ -3,9 +3,9 @@
 from pathlib import Path
 
 from pkm.models.course import Course
-from pkm.storage.json_store import JSONStore
 from pkm.services.note_service import NoteService
 from pkm.services.task_service import TaskService
+from pkm.storage.json_store import JSONStore
 
 
 class CourseService:
@@ -29,7 +29,7 @@ class CourseService:
         """
         data = self.store.load()
         courses: dict[str, Course] = {}
-        
+
         # Count notes by course
         for note_data in data["notes"]:
             course_name = note_data.get("course")
@@ -37,7 +37,7 @@ class CourseService:
                 if course_name not in courses:
                     courses[course_name] = Course(name=course_name, note_count=0, task_count=0)
                 courses[course_name].note_count += 1
-        
+
         # Count tasks by course
         for task_data in data["tasks"]:
             course_name = task_data.get("course")
@@ -45,7 +45,7 @@ class CourseService:
                 if course_name not in courses:
                     courses[course_name] = Course(name=course_name, note_count=0, task_count=0)
                 courses[course_name].task_count += 1
-        
+
         return sorted(courses.values(), key=lambda c: c.name)
 
     def get_course(self, course_name: str) -> Course | None:

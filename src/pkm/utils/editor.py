@@ -18,7 +18,7 @@ def get_default_editor() -> str:
         str: The name of the default text editor executable
     """
     system = platform.system()
-    
+
     if system == "Windows":
         return "notepad.exe"
     elif system == "Darwin":  # macOS
@@ -42,7 +42,7 @@ def open_in_editor(content: str, file_extension: str = ".txt") -> Optional[str]:
     """
     # Get editor from environment or use platform default
     editor = os.environ.get("EDITOR", get_default_editor())
-    
+
     # Create temporary file with initial content
     with tempfile.NamedTemporaryFile(
         mode="w",
@@ -52,26 +52,26 @@ def open_in_editor(content: str, file_extension: str = ".txt") -> Optional[str]:
     ) as tmp_file:
         tmp_file.write(content)
         tmp_path = Path(tmp_file.name)
-    
+
     try:
         # Launch editor
         result = subprocess.run(
             [editor, str(tmp_path)],
             check=True
         )
-        
+
         if result.returncode != 0:
             raise RuntimeError(f"Editor exited with code {result.returncode}")
-        
+
         # Read edited content
         edited_content = tmp_path.read_text(encoding="utf-8")
-        
+
         # Return None if content unchanged
         if edited_content == content:
             return None
-        
+
         return edited_content
-        
+
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f"Failed to launch editor '{editor}': {e}")
     except FileNotFoundError:

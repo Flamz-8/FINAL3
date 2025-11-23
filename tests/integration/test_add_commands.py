@@ -17,7 +17,7 @@ class TestAddCommands:
             cli,
             ["--data-dir", str(temp_data_dir), "add", "note", "Test note content"],
         )
-        
+
         assert result.exit_code == 0
         assert "Note created:" in result.output
         assert "inbox" in result.output
@@ -30,7 +30,7 @@ class TestAddCommands:
             cli,
             ["--data-dir", str(temp_data_dir), "add", "task", "Test task"],
         )
-        
+
         assert result.exit_code == 0
         assert "Task created:" in result.output
         assert "inbox" in result.output
@@ -53,7 +53,7 @@ class TestAddCommands:
                 "Cell Structure",
             ],
         )
-        
+
         assert result.exit_code == 0
         assert "Tagged with: Photosynthesis, Cell Structure" in result.output
 
@@ -72,7 +72,7 @@ class TestAddCommands:
                 "high",
             ],
         )
-        
+
         assert result.exit_code == 0
         assert "Priority: high" in result.output
 
@@ -91,6 +91,6 @@ class TestAddCommands:
                 "Biology 101",
             ],
         )
-        
+
         assert result.exit_code == 0
         assert "course 'Biology 101'" in result.output

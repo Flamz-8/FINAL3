@@ -4,11 +4,11 @@ from pathlib import Path
 
 import click
 
-from pkm.cli.helpers import error, success, info
+from pkm.cli.helpers import error, info, success
 from pkm.cli.main import cli
 from pkm.services.note_service import NoteService
 from pkm.services.task_service import TaskService
-from pkm.utils.date_parser import parse_due_date, format_due_date
+from pkm.utils.date_parser import format_due_date, parse_due_date
 
 
 def get_data_dir(ctx: click.Context) -> Path:
@@ -88,19 +88,19 @@ def add_note(ctx: click.Context, content: str, course: str | None, topics: tuple
     try:
         data_dir = get_data_dir(ctx)
         service = NoteService(data_dir)
-        
+
         note = service.create_note(
             content=content,
             course=course,
             topics=list(topics) if topics else None,
         )
-        
+
         location = f"course '{course}'" if course else "inbox"
         success(f"Note created: {note.id} in {location}")
-        
+
         if topics:
             success(f"Tagged with: {', '.join(topics)}")
-            
+
     except Exception as e:
         error(f"Failed to create note: {e}")
         ctx.exit(1)
@@ -163,7 +163,7 @@ def add_task(ctx: click.Context, title: str, due: str | None, priority: str, cou
     try:
         data_dir = get_data_dir(ctx)
         service = TaskService(data_dir)
-        
+
         # Parse due date
         due_date = None
         if due:
@@ -172,23 +172,23 @@ def add_task(ctx: click.Context, title: str, due: str | None, priority: str, cou
                 error(f"Could not parse due date: '{due}'")
                 info("Try formats like: 'tomorrow', 'next Friday', '2025-12-01', 'Friday 11:59pm'")
                 ctx.exit(1)
-        
+
         task = service.create_task(
             title=title,
             due_date=due_date,
             priority=priority,
             course=course,
         )
-        
+
         location = f"course '{course}'" if course else "inbox"
         success(f"Task created: {task.id} in {location}")
-        
+
         if due_date:
             success(f"Due: {format_due_date(due_date)}")
-        
+
         if priority != "medium":
             success(f"Priority: {priority}")
-            
+
     except Exception as e:
         error(f"Failed to create task: {e}")
         ctx.exit(1)

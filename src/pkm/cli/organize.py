@@ -1,12 +1,11 @@
 """Organization commands for assigning items to courses."""
 
-from pathlib import Path
 
 import click
 
-from pkm.cli.helpers import error, success, info
-from pkm.cli.main import cli
 from pkm.cli.add import get_data_dir
+from pkm.cli.helpers import error, info, success
+from pkm.cli.main import cli
 from pkm.services.note_service import NoteService
 from pkm.services.task_service import TaskService
 
@@ -62,23 +61,23 @@ def organize_note(ctx: click.Context, note_id: str, course: str, add_topics: tup
     try:
         data_dir = get_data_dir(ctx)
         service = NoteService(data_dir)
-        
+
         # Organize to course
         note = service.organize_note(note_id, course)
-        
+
         if note is None:
             error(f"Note not found: {note_id}")
             ctx.exit(1)
-        
+
         # Add topics if specified
         if add_topics:
             note = service.add_topics(note_id, list(add_topics))
-        
+
         success(f"Note organized to '{course}'")
-        
+
         if add_topics:
             info(f"Topics added: {', '.join(add_topics)}")
-            
+
     except Exception as e:
         error(f"Failed to organize note: {e}")
         ctx.exit(1)
@@ -112,16 +111,16 @@ def organize_task(ctx: click.Context, task_id: str, course: str) -> None:
     try:
         data_dir = get_data_dir(ctx)
         service = TaskService(data_dir)
-        
+
         task = service.organize_task(task_id, course)
-        
+
         if task is None:
             error(f"Task not found: {task_id}")
             ctx.exit(1)
-        
+
         success(f"Task organized to '{course}'")
         info(f"Title: {task.title}")
-            
+
     except Exception as e:
         error(f"Failed to organize task: {e}")
         ctx.exit(1)
