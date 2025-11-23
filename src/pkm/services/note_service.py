@@ -159,6 +159,60 @@ class NoteService:
         
         return None
 
+    def update_note(self, note_id: str, new_content: str) -> Note | None:
+        """Update a note's content.
+        
+        Args:
+            note_id: Note ID to update
+            new_content: New content for the note
+            
+        Returns:
+            Updated note if found, None otherwise
+        """
+        data = self.store.load()
+        
+        for i, note_data in enumerate(data["notes"]):
+            if note_data["id"] == note_id:
+                note = deserialize_note(note_data)
+                note.content = new_content
+                note.modified_at = datetime.now()
+                
+                # Update in storage
+                data["notes"][i] = serialize_note(note)
+                self.store.save(data)
+                
+                return note
+        
+        return None
+
+    def remove_topic(self, note_id: str, topic: str) -> Note | None:
+        """Remove a topic from a note.
+        
+        Args:
+            note_id: Note ID
+            topic: Topic to remove
+            
+        Returns:
+            Updated note if found, None otherwise
+        """
+        data = self.store.load()
+        
+        for i, note_data in enumerate(data["notes"]):
+            if note_data["id"] == note_id:
+                note = deserialize_note(note_data)
+                
+                # Remove topic if present
+                if topic in note.topics:
+                    note.topics.remove(topic)
+                
+                # Update in storage
+                data["notes"][i] = serialize_note(note)
+                self.store.save(data)
+                
+                return note
+        
+        return None
+
     def delete_note(self, note_id: str) -> bool:
         """Delete a note.
         

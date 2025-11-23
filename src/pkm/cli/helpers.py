@@ -33,6 +33,15 @@ def info(message: str) -> None:
     console.print(f"[blue]ℹ[/blue] {message}")
 
 
+def warning(message: str) -> None:
+    """Display a warning message.
+    
+    Args:
+        message: Warning message to display
+    """
+    console.print(f"[yellow]⚠[/yellow] {message}", style="yellow")
+
+
 def create_table(title: str, columns: list[str]) -> Table:
     """Create a formatted table.
     

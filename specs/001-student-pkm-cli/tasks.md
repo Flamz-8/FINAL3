@@ -195,24 +195,24 @@
 
 ### Utilities for US4
 
-- [ ] T065 [US4] Create `src/pkm/utils/editor.py` with external editor integration (respects $EDITOR env var, falls back to nano/vim/notepad per platform per FR-025, research.md)
+- [X] T065 [US4] Create `src/pkm/utils/editor.py` with external editor integration (respects $EDITOR env var, falls back to nano/vim/notepad per platform per FR-025, research.md)
 
 ### Enhanced Services for US4
 
-- [ ] T066 [US4] Add topic management to `src/pkm/services/note_service.py`:
+- [X] T066 [US4] Add topic management to `src/pkm/services/note_service.py`:
       - `add_topics(note_id, topics)` method
       - `remove_topic(note_id, topic)` method
       - `get_notes_by_topic(topic_name)` method
-- [ ] T067 [US4] Add `update_note(note_id, new_content)` method to `src/pkm/services/note_service.py` (updates modified_at timestamp)
-- [ ] T068 [US4] Add `delete_note(note_id)` method to `src/pkm/services/note_service.py` with linked task checking
+- [X] T067 [US4] Add `update_note(note_id, new_content)` method to `src/pkm/services/note_service.py` (updates modified_at timestamp)
+- [X] T068 [US4] Add `delete_note(note_id)` method to `src/pkm/services/note_service.py` with linked task checking
 
 ### CLI Commands for US4
 
-- [ ] T069 [US4] Update `src/pkm/cli/organize.py::organize_note()` to support `--add-topics` and `--remove-topic` options (US4-S1)
-- [ ] T070 [US4] Implement `pkm edit note` command in `src/pkm/cli/add.py` or new file (calls editor.py, per contracts, US4-S2, FR-013)
-- [ ] T071 [US4] Update `src/pkm/cli/view.py::view_notes()` to support `--course` and `--topic` filters (US4-S3)
-- [ ] T072 [US4] Implement `pkm view notes` command with grouping by course→topic (US4-S4)
-- [ ] T073 [US4] Implement `pkm delete note` command with confirmation prompt (US4-S5, FR-014)
+- [X] T069 [US4] Update `src/pkm/cli/organize.py::organize_note()` to support `--add-topics` and `--remove-topic` options (US4-S1)
+- [X] T070 [US4] Implement `pkm edit note` command in `src/pkm/cli/add.py` or new file (calls editor.py, per contracts, US4-S2, FR-013)
+- [X] T071 [US4] Update `src/pkm/cli/view.py::view_notes()` to support `--course` and `--topic` filters (US4-S3)
+- [X] T072 [US4] Implement `pkm view notes` command with grouping by course→topic (US4-S4)
+- [X] T073 [US4] Implement `pkm delete note` command with confirmation prompt (US4-S5, FR-014)
 
 ### Integration Tests for US4 (Write FIRST - TDD)
 
@@ -242,12 +242,12 @@
 
 ### CLI Commands for US8
 
-- [ ] T079 [US8] Implement first-run detection in `src/pkm/cli/main.py` (check for ~/.pkm/data.json existence)
-- [ ] T080 [US8] Add onboarding welcome message to `src/pkm/cli/main.py` with top 5 commands (US8-S1, FR-019)
-- [ ] T081 [US8] Implement `pkm help` command using Click's built-in help system (US8-S2, FR-017)
-- [ ] T082 [US8] Add command-specific help with examples to all CLI command docstrings (US8-S3, FR-018)
-- [ ] T083 [US8] Add error handling with helpful suggestions in `src/pkm/cli/main.py` for invalid commands (US8-S4, FR-020)
-- [ ] T084 [US8] Implement `pkm help onboarding` command to replay tutorial (US8-S5)
+- [X] T079 [US8] Implement first-run detection in `src/pkm/cli/main.py` (check for ~/.pkm/data.json existence)
+- [X] T080 [US8] Add onboarding welcome message to `src/pkm/cli/main.py` with top 5 commands (US8-S1, FR-019)
+- [X] T081 [US8] Implement `pkm help` command using Click's built-in help system (US8-S2, FR-017)
+- [X] T082 [US8] Add command-specific help with examples to all CLI command docstrings (US8-S3, FR-018)
+- [X] T083 [US8] Add error handling with helpful suggestions in `src/pkm/cli/main.py` for invalid commands (US8-S4, FR-020)
+- [X] T084 [US8] Implement `pkm help onboarding` command to replay tutorial (US8-S5)
 
 ### Integration Tests for US8 (Write FIRST - TDD)
 
@@ -300,18 +300,18 @@
 
 ### Enhanced Services for US6
 
-- [ ] T090 [US6] Add note linking methods to `src/pkm/services/task_service.py`:
+- [X] T090 [US6] Add note linking methods to `src/pkm/services/task_service.py`:
       - `link_note(task_id, note_id)` method (updates both task.linked_notes and note.linked_from_tasks per data-model.md § Relationships)
       - `unlink_note(task_id, note_id)` method (bidirectional removal)
-- [ ] T091 [US6] Add validation to ensure bidirectional sync in `src/pkm/services/task_service.py` (per data-model.md § Data Integrity Rules)
+- [X] T091 [US6] Add validation to ensure bidirectional sync in `src/pkm/services/task_service.py` (per data-model.md § Data Integrity Rules)
 
 ### CLI Commands for US6
 
-- [ ] T092 [US6] Implement `pkm task link-note` command in `src/pkm/cli/task.py` (per contracts § pkm task link-note)
-- [ ] T093 [US6] Implement `pkm task unlink note` command in `src/pkm/cli/task.py` (US6-S4)
-- [ ] T094 [US6] Implement `pkm view task` command in `src/pkm/cli/view.py` showing linked notes (US6-S2, per contracts § pkm view task)
-- [ ] T095 [US6] Add `--expand` option to `pkm view task` showing full note content (US6-S3)
-- [ ] T096 [US6] Implement `pkm view note` command in `src/pkm/cli/view.py` showing referencing tasks (US6-S5, per contracts § pkm view note)
+- [X] T092 [US6] Implement `pkm task link-note` command in `src/pkm/cli/task.py` (per contracts § pkm task link-note)
+- [X] T093 [US6] Implement `pkm task unlink note` command in `src/pkm/cli/task.py` (US6-S4)
+- [X] T094 [US6] Implement `pkm view task` command in `src/pkm/cli/view.py` showing linked notes (US6-S2, per contracts § pkm view task)
+- [X] T095 [US6] Add `--expand` option to `pkm view task` showing full note content (US6-S3)
+- [X] T096 [US6] Implement `pkm view note` command in `src/pkm/cli/view.py` showing referencing tasks (US6-S5, per contracts § pkm view note)
 
 ### Integration Tests for US6 (Write FIRST - TDD)
 

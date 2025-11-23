@@ -436,3 +436,164 @@ def view_courses(ctx: click.Context) -> None:
     total_notes = sum(c.note_count for c in courses)
     total_tasks = sum(c.task_count for c in courses)
     info(f"Total: {len(courses)} courses, {total_notes} notes, {total_tasks} tasks")
+
+
+@view.command(name="task")
+@click.argument("task_id", required=True)
+@click.option("--expand", "-e", is_flag=True, help="Show full content of linked notes")
+@click.pass_context
+def view_task(ctx: click.Context, task_id: str, expand: bool) -> None:
+    """View a task with all its details and linked notes.
+    
+    \b
+    TASK_ID: The task ID to view
+    
+    \b
+    Options:
+      -e, --expand    Show full content of linked notes
+    
+    \b
+    Examples:
+      # View task details
+      pkm view task t_20251123_140000_xyz
+      
+      # View with full note content
+      pkm view task t_20251123_140000_xyz --expand
+    
+    \b
+    Shows:
+      - Task title and details
+      - Due date and priority
+      - Subtasks and progress
+      - Linked notes (preview or full content)
+    """
+    from pkm.cli.helpers import error
+    
+    data_dir = get_data_dir(ctx)
+    task_service = TaskService(data_dir)
+    note_service = NoteService(data_dir)
+    console = Console()
+    
+    # Get the task
+    task = task_service.get_task(task_id)
+    if not task:
+        error(f"Task not found: {task_id}")
+        info("Use 'pkm view inbox' or 'pkm view course' to see task IDs")
+        ctx.exit(1)
+    
+    # Display task details
+    console.print(f"\n[bold cyan]Task: {task.title}[/bold cyan]")
+    console.print(f"ID: {task.id}")
+    
+    if task.course:
+        console.print(f"Course: {task.course}")
+    else:
+        console.print("Course: [yellow](inbox)[/yellow]")
+    
+    if task.due_date:
+        formatted_due = format_due_date(task.due_date)
+        console.print(f"Due: {formatted_due}")
+    
+    console.print(f"Priority: {task.priority}")
+    console.print(f"Status: {'[green]✓ Completed[/green]' if task.completed else '[yellow]Pending[/yellow]'}")
+    
+    # Show subtasks if any
+    if task.subtasks:
+        console.print(f"\n[bold]Subtasks ({len(task.subtasks)}):[/bold]")
+        for subtask in task.subtasks:
+            status = "✓" if subtask.completed else " "
+            console.print(f"  [{status}] {subtask.id}. {subtask.title}")
+        
+        completed = sum(1 for s in task.subtasks if s.completed)
+        console.print(f"\nProgress: {completed}/{len(task.subtasks)} completed")
+    
+    # Show linked notes
+    if task.linked_notes:
+        console.print(f"\n[bold]Linked Notes ({len(task.linked_notes)}):[/bold]")
+        for note_id in task.linked_notes:
+            note = note_service.get_note(note_id)
+            if note:
+                if expand:
+                    console.print(f"\n[cyan]━━━ {note_id} ━━━[/cyan]")
+                    console.print(note.content)
+                    if note.topics:
+                        console.print(f"Topics: {', '.join(note.topics)}")
+                else:
+                    preview = truncate(note.content, 60)
+                    console.print(f"  • {note_id}: {preview}")
+        
+        if not expand:
+            info("Use --expand to see full note content")
+    else:
+        console.print("\n[dim]No linked notes[/dim]")
+        info("Use 'pkm task link-note TASK_ID NOTE_ID' to link notes")
+    
+    console.print()
+
+
+@view.command(name="note")
+@click.argument("note_id", required=True)
+@click.pass_context
+def view_note(ctx: click.Context, note_id: str) -> None:
+    """View a note with all its details and referencing tasks.
+    
+    \b
+    NOTE_ID: The note ID to view
+    
+    \b
+    Examples:
+      pkm view note n_20251123_140000_xyz
+    
+    \b
+    Shows:
+      - Note content
+      - Topics
+      - Course (if assigned)
+      - Tasks that reference this note
+    """
+    from pkm.cli.helpers import error
+    
+    data_dir = get_data_dir(ctx)
+    note_service = NoteService(data_dir)
+    task_service = TaskService(data_dir)
+    console = Console()
+    
+    # Get the note
+    note = note_service.get_note(note_id)
+    if not note:
+        error(f"Note not found: {note_id}")
+        info("Use 'pkm view inbox' or 'pkm view course' to see note IDs")
+        ctx.exit(1)
+    
+    # Display note details
+    console.print(f"\n[bold cyan]Note[/bold cyan]")
+    console.print(f"ID: {note.id}")
+    
+    if note.course:
+        console.print(f"Course: {note.course}")
+    else:
+        console.print("Course: [yellow](inbox)[/yellow]")
+    
+    if note.topics:
+        console.print(f"Topics: {', '.join(note.topics)}")
+    
+    console.print(f"Created: {format_datetime(note.created_at)}")
+    console.print(f"Modified: {format_datetime(note.modified_at)}")
+    
+    console.print(f"\n[bold]Content:[/bold]")
+    console.print(note.content)
+    
+    # Show tasks that reference this note
+    if note.linked_from_tasks:
+        console.print(f"\n[bold]Referenced by Tasks ({len(note.linked_from_tasks)}):[/bold]")
+        for task_id in note.linked_from_tasks:
+            task = task_service.get_task(task_id)
+            if task:
+                status = "✓" if task.completed else " "
+                priority_color = "red" if task.priority == "high" else "yellow" if task.priority == "medium" else "green"
+                console.print(f"  [{status}] [{priority_color}]{task.priority:6}[/{priority_color}] {task.title} ({task_id})")
+    else:
+        console.print("\n[dim]No tasks reference this note[/dim]")
+        info("Use 'pkm task link-note TASK_ID NOTE_ID' to link this note to a task")
+    
+    console.print()

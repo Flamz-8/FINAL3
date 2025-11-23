@@ -267,3 +267,79 @@ class TaskService:
             List of tasks with the priority
         """
         return [task for task in self.list_tasks() if task.priority == priority and not task.completed]
+
+    def link_note(self, task_id: str, note_id: str) -> Task | None:
+        """Link a note to a task (bidirectional).
+        
+        Args:
+            task_id: Task ID
+            note_id: Note ID to link
+            
+        Returns:
+            Updated task if found, None otherwise
+        """
+        data = self.store.load()
+        
+        # Update task
+        for i, task_data in enumerate(data["tasks"]):
+            if task_data["id"] == task_id:
+                task = deserialize_task(task_data)
+                
+                # Add note to task's linked notes if not already there
+                if note_id not in task.linked_notes:
+                    task.linked_notes.append(note_id)
+                
+                # Update task in storage
+                data["tasks"][i] = serialize_task(task)
+                
+                # Update note's linked_from_tasks (bidirectional)
+                for j, note_data in enumerate(data["notes"]):
+                    if note_data["id"] == note_id:
+                        if task_id not in note_data.get("linked_from_tasks", []):
+                            note_data.setdefault("linked_from_tasks", []).append(task_id)
+                        data["notes"][j] = note_data
+                        break
+                
+                self.store.save(data)
+                return task
+        
+        return None
+
+    def unlink_note(self, task_id: str, note_id: str) -> Task | None:
+        """Unlink a note from a task (bidirectional).
+        
+        Args:
+            task_id: Task ID
+            note_id: Note ID to unlink
+            
+        Returns:
+            Updated task if found, None otherwise
+        """
+        data = self.store.load()
+        
+        # Update task
+        for i, task_data in enumerate(data["tasks"]):
+            if task_data["id"] == task_id:
+                task = deserialize_task(task_data)
+                
+                # Remove note from task's linked notes
+                if note_id in task.linked_notes:
+                    task.linked_notes.remove(note_id)
+                
+                # Update task in storage
+                data["tasks"][i] = serialize_task(task)
+                
+                # Update note's linked_from_tasks (bidirectional)
+                for j, note_data in enumerate(data["notes"]):
+                    if note_data["id"] == note_id:
+                        linked_tasks = note_data.get("linked_from_tasks", [])
+                        if task_id in linked_tasks:
+                            linked_tasks.remove(task_id)
+                            note_data["linked_from_tasks"] = linked_tasks
+                        data["notes"][j] = note_data
+                        break
+                
+                self.store.save(data)
+                return task
+        
+        return None

@@ -162,3 +162,91 @@ def check_subtask(ctx: click.Context, task_id: str, subtask_id: int) -> None:
     except Exception as e:
         error(f"Failed to complete subtask: {e}")
         ctx.exit(1)
+
+
+@task.command(name="link-note")
+@click.argument("task_id", required=True)
+@click.argument("note_id", required=True)
+@click.pass_context
+def link_note(ctx: click.Context, task_id: str, note_id: str) -> None:
+    """Link a note to a task for reference.
+    
+    \b
+    TASK_ID: The task ID to link to
+    NOTE_ID: The note ID to link
+    
+    \b
+    Examples:
+      pkm task link-note t_20251123_140000_xyz n_20251123_140000_abc
+    
+    \b
+    Why Link Notes to Tasks?
+      - Attach reference materials to tasks
+      - Connect lecture notes to related assignments
+      - Keep all context for a task in one place
+    
+    \b
+    View linked notes:
+      pkm view task TASK_ID
+    """
+    try:
+        data_dir = get_data_dir(ctx)
+        task_service = TaskService(data_dir)
+        
+        # Import note service to verify note exists
+        from pkm.services.note_service import NoteService
+        note_service = NoteService(data_dir)
+        
+        # Verify note exists
+        note = note_service.get_note(note_id)
+        if note is None:
+            error(f"Note not found: {note_id}")
+            info("Use 'pkm view inbox' or 'pkm view course' to see note IDs")
+            ctx.exit(1)
+        
+        # Link the note to the task
+        task = task_service.link_note(task_id, note_id)
+        
+        if task is None:
+            error(f"Task not found: {task_id}")
+            info("Use 'pkm view inbox' or 'pkm view course' to see task IDs")
+            ctx.exit(1)
+        
+        success(f"Note linked to task: {task.title}")
+        info(f"Note: {note.content[:50]}..." if len(note.content) > 50 else f"Note: {note.content}")
+            
+    except Exception as e:
+        error(f"Failed to link note: {e}")
+        ctx.exit(1)
+
+
+@task.command(name="unlink-note")
+@click.argument("task_id", required=True)
+@click.argument("note_id", required=True)
+@click.pass_context
+def unlink_note(ctx: click.Context, task_id: str, note_id: str) -> None:
+    """Unlink a note from a task.
+    
+    \b
+    TASK_ID: The task ID to unlink from
+    NOTE_ID: The note ID to unlink
+    
+    \b
+    Examples:
+      pkm task unlink-note t_20251123_140000_xyz n_20251123_140000_abc
+    """
+    try:
+        data_dir = get_data_dir(ctx)
+        service = TaskService(data_dir)
+        
+        task = service.unlink_note(task_id, note_id)
+        
+        if task is None:
+            error(f"Task not found: {task_id}")
+            ctx.exit(1)
+        
+        success(f"Note unlinked from task: {task.title}")
+            
+    except Exception as e:
+        error(f"Failed to unlink note: {e}")
+        ctx.exit(1)
