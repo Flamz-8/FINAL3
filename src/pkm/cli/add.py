@@ -30,24 +30,59 @@ def get_data_dir(ctx: click.Context) -> Path:
 
 @cli.group()
 def add() -> None:
-    """Add notes and tasks."""
+    """Add notes and tasks to your inbox.
+    
+    \b
+    Quick capture commands:
+      pkm add note CONTENT   - Capture a note
+      pkm add task TITLE     - Create a task
+    
+    \b
+    Examples:
+      pkm add note "Biology lecture notes"
+      pkm add note "DNA info" --topics "Biology" --course "BIO101"
+      pkm add task "Study for exam" --priority high
+    """
     pass
 
 
 @add.command(name="note")
 @click.argument("content", required=True)
-@click.option("--course", "-c", help="Assign to course")
-@click.option("--topics", "-t", multiple=True, help="Add topic tags")
+@click.option("--course", "-c", help="Assign to course (leaves inbox if omitted)")
+@click.option("--topics", "-t", multiple=True, help="Add topic tags (can use multiple times)")
 @click.pass_context
 def add_note(ctx: click.Context, content: str, course: str | None, topics: tuple[str, ...]) -> None:
-    """Add a new note.
+    """Add a new note to your inbox or directly to a course.
     
-    CONTENT: Note content (use quotes for multi-line)
+    \b
+    CONTENT: Note content (use quotes for multi-word or multi-line notes)
     
+    \b
+    Options:
+      -c, --course TEXT    Assign to a course (e.g., "Biology 101")
+      -t, --topics TEXT    Add topic tags (use multiple times for multiple topics)
+    
+    \b
     Examples:
-        pkm add note "Photosynthesis converts light to chemical energy"
-        pkm add note "Important lecture points" --course "Biology 101"
-        pkm add note "Study topic" --topics "Photosynthesis" --topics "Cell Structure"
+      # Quick inbox capture
+      pkm add note "Photosynthesis converts light to chemical energy"
+      
+      # Note with course
+      pkm add note "Lecture summary" --course "Biology 101"
+      
+      # Note with multiple topics
+      pkm add note "Cell division process" \\
+        --topics "Biology" \\
+        --topics "Cell Structure" \\
+        --topics "Mitosis"
+      
+      # Multi-line note
+      pkm add note "Key points:
+      - Light reactions in thylakoid
+      - Calvin cycle in stroma
+      - Produces glucose"
+    
+    Notes without a course are stored in your inbox for later organization.
     """
     try:
         data_dir = get_data_dir(ctx)
@@ -72,19 +107,46 @@ def add_note(ctx: click.Context, content: str, course: str | None, topics: tuple
 
 @add.command(name="task")
 @click.argument("title", required=True)
-@click.option("--due", "-d", help="Due date (e.g., 'tomorrow', '2025-12-01')")
-@click.option("--priority", "-p", type=click.Choice(["high", "medium", "low"]), default="medium", help="Task priority")
-@click.option("--course", "-c", help="Assign to course")
+@click.option("--due", "-d", help="Due date (COMING SOON - e.g., 'tomorrow', '2025-12-01')")
+@click.option("--priority", "-p", type=click.Choice(["high", "medium", "low"]), default="medium", help="Task priority: high, medium (default), or low")
+@click.option("--course", "-c", help="Assign to course (leaves inbox if omitted)")
 @click.pass_context
 def add_task(ctx: click.Context, title: str, due: str | None, priority: str, course: str | None) -> None:
-    """Add a new task.
+    """Add a new task to your inbox or directly to a course.
     
-    TITLE: Task description
+    \b
+    TITLE: Task description or title
     
+    \b
+    Options:
+      -d, --due TEXT         Due date (COMING SOON in Phase 4)
+      -p, --priority TEXT    Priority level: high, medium, low (default: medium)
+      -c, --course TEXT      Assign to a course (e.g., "Math 201")
+    
+    \b
     Examples:
-        pkm add task "Submit lab report"
-        pkm add task "Study for exam" --due "Friday" --priority high
-        pkm add task "Review notes" --course "Biology 101"
+      # Quick task
+      pkm add task "Submit lab report"
+      
+      # High-priority task
+      pkm add task "Study for midterm" --priority high
+      
+      # Task with course
+      pkm add task "Complete problem set 5" --course "Math 201"
+      
+      # Combine options
+      pkm add task "Finish research paper" \\
+        --priority high \\
+        --course "English 101"
+    
+    \b
+    Priority Levels:
+      high   - Urgent, important deadlines
+      medium - Normal tasks (default)
+      low    - Nice to have, flexible timing
+    
+    Tasks without a course are stored in your inbox for later organization.
+    Note: Due date parsing (--due) will be available in Phase 4.
     """
     try:
         data_dir = get_data_dir(ctx)

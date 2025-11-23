@@ -13,17 +13,52 @@ from pkm.services.task_service import TaskService
 
 @cli.group()
 def view() -> None:
-    """View notes and tasks."""
+    """View notes and tasks in various formats.
+    
+    \b
+    Available views:
+      pkm view inbox    - Show unorganized notes and tasks
+    
+    \b
+    Coming soon:
+      pkm view today    - Tasks due today (Phase 4)
+      pkm view week     - Tasks due this week (Phase 4)
+      pkm view overdue  - Overdue tasks (Phase 4)
+      pkm view course   - Items by course (Phase 5)
+    
+    \b
+    Examples:
+      pkm view inbox
+      pkm view inbox --data-dir ~/my-notes
+    """
     pass
 
 
 @view.command(name="inbox")
 @click.pass_context
 def view_inbox(ctx: click.Context) -> None:
-    """View all inbox items (unorganized notes and tasks).
+    """View all unorganized notes and tasks in your inbox.
     
+    \b
+    Shows:
+      - Notes without a course assignment
+      - Tasks without a course assignment
+      - Displayed in rich formatted tables
+      - Sorted by creation date
+    
+    \b
     Examples:
-        pkm view inbox
+      # View inbox
+      pkm view inbox
+      
+      # View inbox with custom data location
+      pkm --data-dir ~/study-notes view inbox
+    
+    \b
+    The inbox is your temporary holding area for quick capture.
+    Organize items later by assigning them to courses (coming in Phase 5).
+    
+    Empty inbox = all items organized!
     """
     data_dir = get_data_dir(ctx)
     note_service = NoteService(data_dir)

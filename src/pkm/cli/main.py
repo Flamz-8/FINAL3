@@ -16,7 +16,25 @@ import click
 def cli(ctx: click.Context, data_dir: str | None, no_color: bool, verbose: bool) -> None:
     """Pro Study Planner - Terminal-based personal knowledge management for students.
     
-    Quick capture notes and tasks, organize by course and topic, track deadlines.
+    \b
+    Quick capture workflow:
+      1. Add notes and tasks to inbox
+      2. Organize by course and topic (coming soon)
+      3. View filtered lists and search
+    
+    \b
+    Examples:
+      pkm add note "Photosynthesis converts light to energy"
+      pkm add task "Submit lab report" --priority high
+      pkm view inbox
+    
+    \b
+    Get help on specific commands:
+      pkm add --help
+      pkm add note --help
+      pkm view --help
+    
+    Data is stored at ~/.pkm/data.json (or use --data-dir to customize)
     """
     # Store global options in context for subcommands
     ctx.ensure_object(dict)
