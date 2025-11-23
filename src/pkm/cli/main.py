@@ -25,5 +25,11 @@ def cli(ctx: click.Context, data_dir: str | None, no_color: bool, verbose: bool)
     ctx.obj["verbose"] = verbose
 
 
+# Import command groups to register them with the CLI
+# This must happen after cli() is defined
+from pkm.cli import add  # noqa: E402
+from pkm.cli import view  # noqa: E402
+
+
 if __name__ == "__main__":
     cli()

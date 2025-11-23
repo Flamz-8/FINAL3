@@ -74,29 +74,29 @@
 
 ### Services for US1
 
-- [ ] T027 [P] [US1] Create `src/pkm/services/__init__.py`
-- [ ] T028 [P] [US1] Create `src/pkm/services/id_generator.py` implementing ID generation per data-model.md § ID Generation Strategy
-- [ ] T029 [US1] Create `src/pkm/services/note_service.py` with `create_note(content, course, topics)` method
-- [ ] T030 [US1] Create `src/pkm/services/task_service.py` with `create_task(title, due_date, priority, course)` method
+- [X] T027 [P] [US1] Create `src/pkm/services/__init__.py`
+- [X] T028 [P] [US1] Create `src/pkm/services/id_generator.py` implementing ID generation per data-model.md § ID Generation Strategy
+- [X] T029 [US1] Create `src/pkm/services/note_service.py` with `create_note(content, course, topics)` method
+- [X] T030 [US1] Create `src/pkm/services/task_service.py` with `create_task(title, due_date, priority, course)` method
 
 ### CLI Commands for US1
 
-- [ ] T031 [P] [US1] Create `src/pkm/cli/__init__.py`
-- [ ] T032 [P] [US1] Create `src/pkm/cli/helpers.py` with rich formatting utilities (success/error messages, icons per contracts § Output Formatting)
-- [ ] T033 [US1] Create `src/pkm/cli/main.py` with Click root application and global options (--data-dir, --no-color, --verbose per contracts § Global Options)
-- [ ] T034 [US1] Create `src/pkm/cli/add.py` implementing `pkm add note` command (per contracts § 1. Quick Capture Commands)
-- [ ] T035 [US1] Implement `pkm add task` command in `src/pkm/cli/add.py` (per contracts § pkm add task)
-- [ ] T036 [US1] Create `src/pkm/cli/view.py` implementing `pkm view inbox` command (per contracts § 2. View Commands)
+- [X] T031 [P] [US1] Create `src/pkm/cli/__init__.py`
+- [X] T032 [P] [US1] Create `src/pkm/cli/helpers.py` with rich formatting utilities (success/error messages, icons per contracts § Output Formatting)
+- [X] T033 [US1] Create `src/pkm/cli/main.py` with Click root application and global options (--data-dir, --no-color, --verbose per contracts § Global Options)
+- [X] T034 [US1] Create `src/pkm/cli/add.py` implementing `pkm add note` command (per contracts § 1. Quick Capture Commands)
+- [X] T035 [US1] Implement `pkm add task` command in `src/pkm/cli/add.py` (per contracts § pkm add task)
+- [X] T036 [US1] Create `src/pkm/cli/view.py` implementing `pkm view inbox` command (per contracts § 2. View Commands)
 
 ### Integration Tests for US1 (Write FIRST - TDD)
 
-- [ ] T037 [P] [US1] Create `tests/integration/__init__.py`
-- [ ] T038 [US1] Write `tests/integration/test_add_commands.py` with tests for:
+- [X] T037 [P] [US1] Create `tests/integration/__init__.py`
+- [X] T038 [US1] Write `tests/integration/test_add_commands.py` with tests for:
       - US1-S1: `test_add_note_creates_in_inbox()` validates note creation with ID and timestamp
       - US1-S2: `test_add_task_creates_in_inbox()` validates task creation without due date
       - US1-S4: `test_add_prompts_for_type()` validates interactive prompt (if implemented)
       (MUST FAIL before T034-T035)
-- [ ] T039 [US1] Write `tests/integration/test_view_commands.py::test_view_inbox_shows_all_items()` validating US1-S3 (MUST FAIL before T036)
+- [X] T039 [US1] Write `tests/integration/test_view_commands.py::test_view_inbox_shows_all_items()` validating US1-S3 (MUST FAIL before T036)
 
 **Checkpoint**: User Story 1 complete - Can capture notes/tasks to inbox and view them. Run `uv run pytest tests/integration/test_add_commands.py` - all tests PASS
 
