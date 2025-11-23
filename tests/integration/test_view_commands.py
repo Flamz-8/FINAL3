@@ -148,7 +148,7 @@ class TestViewCommands:
         runner = CliRunner()
 
         # Create task and complete it
-        task_result = runner.invoke(
+        runner.invoke(
             cli,
             ["--data-dir", str(temp_data_dir), "add", "task", "Current task", "--due", "today"],
         )

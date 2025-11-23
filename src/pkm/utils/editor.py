@@ -13,7 +13,7 @@ from typing import Optional
 
 def get_default_editor() -> str:
     """Get the default editor for the current platform.
-    
+
     Returns:
         str: The name of the default text editor executable
     """
@@ -29,14 +29,14 @@ def get_default_editor() -> str:
 
 def open_in_editor(content: str, file_extension: str = ".txt") -> Optional[str]:
     """Open content in external editor and return the edited result.
-    
+
     Args:
         content: Initial content to edit
         file_extension: File extension for the temporary file (default: .txt)
-    
+
     Returns:
         str | None: Edited content, or None if editing was cancelled/failed
-    
+
     Raises:
         RuntimeError: If the editor fails to launch or exits with error
     """

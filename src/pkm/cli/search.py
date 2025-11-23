@@ -19,30 +19,30 @@ from pkm.utils.date_parser import format_due_date
 @click.pass_context
 def search(ctx: click.Context, query: str, type: str | None, course: str | None, topic: str | None) -> None:
     """Search for notes and tasks by keyword.
-    
+
     \b
     QUERY: Search term (searches content, titles, topics, courses)
-    
+
     \b
     Options:
       -t, --type TEXT     Filter: notes or tasks
       -c, --course TEXT   Filter by course name
       --topic TEXT        Filter by topic (notes only)
-    
+
     \b
     Examples:
       # Search everything
       pkm search "photosynthesis"
-      
+
       # Search only notes
       pkm search "exam" --type notes
-      
+
       # Search in a specific course
       pkm search "chapter" --course "Biology 101"
-      
+
       # Search by topic
       pkm search "cell" --topic "Biology"
-    
+
     Search is case-insensitive and matches partial words.
     """
     try:

@@ -13,7 +13,7 @@ class CourseService:
 
     def __init__(self, data_dir: Path) -> None:
         """Initialize course service.
-        
+
         Args:
             data_dir: Directory containing data.json
         """
@@ -23,7 +23,7 @@ class CourseService:
 
     def list_courses(self) -> list[Course]:
         """List all courses with note and task counts.
-        
+
         Returns:
             List of courses with metadata
         """
@@ -50,10 +50,10 @@ class CourseService:
 
     def get_course(self, course_name: str) -> Course | None:
         """Get a course with counts.
-        
+
         Args:
             course_name: Course name
-            
+
         Returns:
             Course if exists, None otherwise
         """

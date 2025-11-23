@@ -13,10 +13,10 @@ from pkm.utils.date_parser import format_due_date, parse_due_date
 
 def get_data_dir(ctx: click.Context) -> Path:
     """Get data directory from context or use default.
-    
+
     Args:
         ctx: Click context
-        
+
     Returns:
         Path to data directory
     """
@@ -32,12 +32,12 @@ def get_data_dir(ctx: click.Context) -> Path:
 @cli.group()
 def add() -> None:
     """Add notes and tasks to your inbox.
-    
+
     \b
     Quick capture commands:
       pkm add note CONTENT   - Capture a note
       pkm add task TITLE     - Create a task
-    
+
     \b
     Examples:
       pkm add note "Biology lecture notes"
@@ -54,35 +54,35 @@ def add() -> None:
 @click.pass_context
 def add_note(ctx: click.Context, content: str, course: str | None, topics: tuple[str, ...]) -> None:
     """Add a new note to your inbox or directly to a course.
-    
+
     \b
     CONTENT: Note content (use quotes for multi-word or multi-line notes)
-    
+
     \b
     Options:
       -c, --course TEXT    Assign to a course (e.g., "Biology 101")
       -t, --topics TEXT    Add topic tags (use multiple times for multiple topics)
-    
+
     \b
     Examples:
       # Quick inbox capture
       pkm add note "Photosynthesis converts light to chemical energy"
-      
+
       # Note with course
       pkm add note "Lecture summary" --course "Biology 101"
-      
+
       # Note with multiple topics
       pkm add note "Cell division process" \\
         --topics "Biology" \\
         --topics "Cell Structure" \\
         --topics "Mitosis"
-      
+
       # Multi-line note
       pkm add note "Key points:
       - Light reactions in thylakoid
       - Calvin cycle in stroma
       - Produces glucose"
-    
+
     Notes without a course are stored in your inbox for later organization.
     """
     try:
@@ -114,50 +114,50 @@ def add_note(ctx: click.Context, content: str, course: str | None, topics: tuple
 @click.pass_context
 def add_task(ctx: click.Context, title: str, due: str | None, priority: str, course: str | None) -> None:
     """Add a new task to your inbox or directly to a course.
-    
+
     \b
     TITLE: Task description or title
-    
+
     \b
     Options:
       -d, --due TEXT         Due date (natural language or YYYY-MM-DD)
       -p, --priority TEXT    Priority level: high, medium, low (default: medium)
       -c, --course TEXT      Assign to a course (e.g., "Math 201")
-    
+
     \b
     Examples:
       # Quick task
       pkm add task "Submit lab report"
-      
+
       # Task with due date
       pkm add task "Submit lab report" --due "Friday 11:59pm"
       pkm add task "Study for exam" --due "tomorrow"
       pkm add task "Final project" --due "2025-12-15"
-      
+
       # High-priority task
       pkm add task "Study for midterm" --priority high
-      
+
       # Task with course
       pkm add task "Complete problem set 5" --course "Math 201"
-      
+
       # Combine options
       pkm add task "Finish research paper" \\
         --due "next Friday" \\
         --priority high \\
         --course "English 101"
-    
+
     \b
     Priority Levels:
       high   - Urgent, important deadlines
       medium - Normal tasks (default)
       low    - Nice to have, flexible timing
-    
+
     \b
     Due Date Formats:
       Natural: "tomorrow", "next Friday", "in 3 days"
       ISO:     "2025-12-01"
       Human:   "Dec 1", "Friday 11:59pm"
-    
+
     Tasks without a course are stored in your inbox for later organization.
     """
     try:

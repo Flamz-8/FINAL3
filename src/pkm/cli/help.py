@@ -13,7 +13,7 @@ console = Console()
 @cli.group()
 def help_cmd() -> None:
     """Get help with Pro Study Planner commands.
-    
+
     \b
     Commands:
       pkm help onboarding  - Show welcome tutorial again
@@ -25,10 +25,10 @@ def help_cmd() -> None:
 @help_cmd.command(name="onboarding")
 def help_onboarding() -> None:
     """Display the onboarding tutorial.
-    
+
     Shows the welcome message with quick start guide and top commands.
     Useful for new users or as a refresher.
-    
+
     \b
     Example:
       pkm help onboarding
@@ -40,7 +40,7 @@ def help_onboarding() -> None:
 @click.pass_context
 def help_commands(ctx: click.Context) -> None:
     """List all available commands with brief descriptions.
-    
+
     \b
     Example:
       pkm help commands

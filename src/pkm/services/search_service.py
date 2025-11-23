@@ -13,7 +13,7 @@ class SearchService:
 
     def __init__(self, data_dir: Path) -> None:
         """Initialize search service.
-        
+
         Args:
             data_dir: Directory containing data.json
         """
@@ -28,13 +28,13 @@ class SearchService:
         topic_filter: str | None = None,
     ) -> tuple[list[Note], list[Task]]:
         """Search for notes and tasks matching query.
-        
+
         Args:
             query: Search term (case-insensitive substring match)
             type_filter: Filter by type: "notes", "tasks", or None for both
             course_filter: Filter by course name
             topic_filter: Filter by topic name
-            
+
         Returns:
             Tuple of (matching_notes, matching_tasks)
         """

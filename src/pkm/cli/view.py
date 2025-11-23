@@ -17,18 +17,18 @@ from pkm.utils.date_parser import format_due_date
 @cli.group()
 def view() -> None:
     """View notes and tasks in various formats.
-    
+
     \b
     Available views:
       pkm view inbox    - Show unorganized notes and tasks
       pkm view today    - Tasks due today
       pkm view week     - Tasks due this week
       pkm view overdue  - Overdue tasks
-    
+
     \b
     Coming soon:
       pkm view course   - Items by course (Phase 5)
-    
+
     \b
     Examples:
       pkm view inbox
@@ -43,26 +43,26 @@ def view() -> None:
 @click.pass_context
 def view_inbox(ctx: click.Context) -> None:
     """View all unorganized notes and tasks in your inbox.
-    
+
     \b
     Shows:
       - Notes without a course assignment
       - Tasks without a course assignment
       - Displayed in rich formatted tables
       - Sorted by creation date
-    
+
     \b
     Examples:
       # View inbox
       pkm view inbox
-      
+
       # View inbox with custom data location
       pkm --data-dir ~/study-notes view inbox
-    
+
     \b
     The inbox is your temporary holding area for quick capture.
     Organize items later by assigning them to courses (coming in Phase 5).
-    
+
     Empty inbox = all items organized!
     """
     data_dir = get_data_dir(ctx)
@@ -124,21 +124,21 @@ def view_inbox(ctx: click.Context) -> None:
 @click.pass_context
 def view_today(ctx: click.Context) -> None:
     """View tasks due today.
-    
+
     \b
     Shows:
       - All tasks with due date = today
       - Excludes completed tasks
       - Sorted by priority (high → medium → low)
-    
+
     \b
     Examples:
       # View today's tasks
       pkm view today
-      
+
       # With custom data location
       pkm --data-dir ~/study-notes view today
-    
+
     Use this command each morning to see what's on your plate for the day!
     """
     data_dir = get_data_dir(ctx)
@@ -189,21 +189,21 @@ def view_today(ctx: click.Context) -> None:
 @click.pass_context
 def view_week(ctx: click.Context) -> None:
     """View tasks due this week (next 7 days).
-    
+
     \b
     Shows:
       - All tasks with due date within 7 days
       - Excludes completed tasks
       - Sorted by due date
-    
+
     \b
     Examples:
       # View this week's tasks
       pkm view week
-      
+
       # With custom data location
       pkm --data-dir ~/study-notes view week
-    
+
     Great for weekly planning and seeing what's coming up!
     """
     data_dir = get_data_dir(ctx)
@@ -253,22 +253,22 @@ def view_week(ctx: click.Context) -> None:
 @click.pass_context
 def view_overdue(ctx: click.Context) -> None:
     """View overdue tasks (past due date and not completed).
-    
+
     \b
     Shows:
       - All tasks with due date < today
       - Only incomplete tasks
       - Sorted by how overdue (oldest first)
       - Highlighted in red
-    
+
     \b
     Examples:
       # View overdue tasks
       pkm view overdue
-      
+
       # With custom data location
       pkm --data-dir ~/study-notes view overdue
-    
+
     Time to catch up on these! Complete or reschedule overdue tasks.
     """
     data_dir = get_data_dir(ctx)
@@ -319,24 +319,24 @@ def view_overdue(ctx: click.Context) -> None:
 @click.pass_context
 def view_course(ctx: click.Context, course_name: str) -> None:
     """View all notes and tasks for a specific course.
-    
+
     \b
     COURSE_NAME: The course name (use quotes if it contains spaces)
-    
+
     \b
     Shows:
       - All notes in the course
       - All tasks in the course
       - Grouped and formatted with rich tables
-    
+
     \b
     Examples:
       # View a course
       pkm view course "Biology 101"
-      
+
       # View course without spaces
       pkm view course Math201
-    
+
     This helps you see all content related to a specific class.
     """
     data_dir = get_data_dir(ctx)
@@ -396,18 +396,18 @@ def view_course(ctx: click.Context, course_name: str) -> None:
 @click.pass_context
 def view_courses(ctx: click.Context) -> None:
     """List all courses with note and task counts.
-    
+
     \b
     Shows:
       - All courses in your system
       - Number of notes per course
       - Number of tasks per course
-    
+
     \b
     Examples:
       # List all courses
       pkm view courses
-    
+
     Use this to see all your classes and their content at a glance.
     """
     data_dir = get_data_dir(ctx)
@@ -443,22 +443,22 @@ def view_courses(ctx: click.Context) -> None:
 @click.pass_context
 def view_task(ctx: click.Context, task_id: str, expand: bool) -> None:
     """View a task with all its details and linked notes.
-    
+
     \b
     TASK_ID: The task ID to view
-    
+
     \b
     Options:
       -e, --expand    Show full content of linked notes
-    
+
     \b
     Examples:
       # View task details
       pkm view task t_20251123_140000_xyz
-      
+
       # View with full note content
       pkm view task t_20251123_140000_xyz --expand
-    
+
     \b
     Shows:
       - Task title and details
@@ -535,14 +535,14 @@ def view_task(ctx: click.Context, task_id: str, expand: bool) -> None:
 @click.pass_context
 def view_note(ctx: click.Context, note_id: str) -> None:
     """View a note with all its details and referencing tasks.
-    
+
     \b
     NOTE_ID: The note ID to view
-    
+
     \b
     Examples:
       pkm view note n_20251123_140000_xyz
-    
+
     \b
     Shows:
       - Note content

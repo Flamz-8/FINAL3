@@ -12,13 +12,13 @@ from pkm.services.task_service import TaskService
 @cli.group()
 def task() -> None:
     """Manage tasks (complete, add subtasks).
-    
+
     \b
     Commands:
       pkm task complete TASK_ID       - Mark task as done
       pkm task add-subtask TASK_ID    - Add a subtask/bullet point
       pkm task check-subtask TASK_ID  - Mark subtask as complete
-    
+
     \b
     Examples:
       pkm task complete t_20251123_140000_xyz
@@ -33,18 +33,18 @@ def task() -> None:
 @click.pass_context
 def complete_task(ctx: click.Context, task_id: str) -> None:
     """Mark a task as completed.
-    
+
     \b
     TASK_ID: The ID of the task to complete
-    
+
     \b
     Examples:
       # Complete a task
       pkm task complete t_20251123_140000_xyz
-      
+
       # With custom data directory
       pkm --data-dir ~/study task complete t_20251123_140000_xyz
-    
+
     Completed tasks are marked with a timestamp and won't appear in active task views.
     """
     try:
@@ -72,21 +72,21 @@ def complete_task(ctx: click.Context, task_id: str) -> None:
 @click.pass_context
 def add_subtask(ctx: click.Context, task_id: str, title: str) -> None:
     """Add a subtask (bullet point) to a task.
-    
+
     \b
     TASK_ID: The parent task ID
     TITLE:   The subtask description
-    
+
     \b
     Examples:
       # Add a subtask
       pkm task add-subtask t_20251123_140000_xyz "Review chapter 1"
-      
+
       # Add multiple subtasks
       pkm task add-subtask t_20251123_140000_xyz "Read sections 1-3"
       pkm task add-subtask t_20251123_140000_xyz "Complete practice problems"
       pkm task add-subtask t_20251123_140000_xyz "Write summary"
-    
+
     Subtasks help break down larger tasks into manageable steps.
     """
     try:
@@ -117,22 +117,22 @@ def add_subtask(ctx: click.Context, task_id: str, title: str) -> None:
 @click.pass_context
 def check_subtask(ctx: click.Context, task_id: str, subtask_id: int) -> None:
     """Mark a subtask as completed.
-    
+
     \b
     TASK_ID:    The parent task ID
     SUBTASK_ID: The subtask number (integer, e.g., 1, 2, 3)
-    
+
     \b
     Examples:
       # Complete subtask #1
       pkm task check-subtask t_20251123_140000_xyz 1
-      
+
       # Complete subtask #2
       pkm task check-subtask t_20251123_140000_xyz 2
-      
+
       # View task with subtasks first
       pkm view inbox
-    
+
     Completed subtasks are marked with ✓ in task views.
     """
     try:
@@ -169,21 +169,21 @@ def check_subtask(ctx: click.Context, task_id: str, subtask_id: int) -> None:
 @click.pass_context
 def link_note(ctx: click.Context, task_id: str, note_id: str) -> None:
     """Link a note to a task for reference.
-    
+
     \b
     TASK_ID: The task ID to link to
     NOTE_ID: The note ID to link
-    
+
     \b
     Examples:
       pkm task link-note t_20251123_140000_xyz n_20251123_140000_abc
-    
+
     \b
     Why Link Notes to Tasks?
       - Attach reference materials to tasks
       - Connect lecture notes to related assignments
       - Keep all context for a task in one place
-    
+
     \b
     View linked notes:
       pkm view task TASK_ID
@@ -225,11 +225,11 @@ def link_note(ctx: click.Context, task_id: str, note_id: str) -> None:
 @click.pass_context
 def unlink_note(ctx: click.Context, task_id: str, note_id: str) -> None:
     """Unlink a note from a task.
-    
+
     \b
     TASK_ID: The task ID to unlink from
     NOTE_ID: The note ID to unlink
-    
+
     \b
     Examples:
       pkm task unlink-note t_20251123_140000_xyz n_20251123_140000_abc

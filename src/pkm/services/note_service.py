@@ -16,7 +16,7 @@ class NoteService:
 
     def __init__(self, data_dir: Path) -> None:
         """Initialize note service.
-        
+
         Args:
             data_dir: Directory containing data.json
         """
@@ -42,12 +42,12 @@ class NoteService:
         self, content: str, course: str | None = None, topics: list[str] | None = None
     ) -> Note:
         """Create a new note.
-        
+
         Args:
             content: Note content
             course: Optional course assignment
             topics: Optional topic tags
-            
+
         Returns:
             Created note
         """
@@ -71,10 +71,10 @@ class NoteService:
 
     def get_note(self, note_id: str) -> Note | None:
         """Get a note by ID.
-        
+
         Args:
             note_id: Note ID
-            
+
         Returns:
             Note if found, None otherwise
         """
@@ -86,7 +86,7 @@ class NoteService:
 
     def list_notes(self) -> list[Note]:
         """List all notes.
-        
+
         Returns:
             List of all notes
         """
@@ -95,7 +95,7 @@ class NoteService:
 
     def get_inbox_notes(self) -> list[Note]:
         """Get all notes in inbox (course=None).
-        
+
         Returns:
             List of inbox notes
         """
@@ -103,11 +103,11 @@ class NoteService:
 
     def organize_note(self, note_id: str, course: str) -> Note | None:
         """Assign a note to a course (move from inbox).
-        
+
         Args:
             note_id: Note ID to organize
             course: Course name to assign
-            
+
         Returns:
             Updated note if found, None otherwise
         """
@@ -128,10 +128,10 @@ class NoteService:
 
     def get_notes_by_course(self, course_name: str) -> list[Note]:
         """Get all notes for a specific course.
-        
+
         Args:
             course_name: Course name to filter by
-            
+
         Returns:
             List of notes in the course
         """
@@ -139,10 +139,10 @@ class NoteService:
 
     def get_notes_by_topic(self, topic_name: str) -> list[Note]:
         """Get all notes with a specific topic.
-        
+
         Args:
             topic_name: Topic to filter by
-            
+
         Returns:
             List of notes with the topic
         """
@@ -150,11 +150,11 @@ class NoteService:
 
     def add_topics(self, note_id: str, topics: list[str]) -> Note | None:
         """Add topics to a note.
-        
+
         Args:
             note_id: Note ID
             topics: Topics to add
-            
+
         Returns:
             Updated note if found, None otherwise
         """
@@ -179,11 +179,11 @@ class NoteService:
 
     def update_note(self, note_id: str, new_content: str) -> Note | None:
         """Update a note's content.
-        
+
         Args:
             note_id: Note ID to update
             new_content: New content for the note
-            
+
         Returns:
             Updated note if found, None otherwise
         """
@@ -205,11 +205,11 @@ class NoteService:
 
     def remove_topic(self, note_id: str, topic: str) -> Note | None:
         """Remove a topic from a note.
-        
+
         Args:
             note_id: Note ID
             topic: Topic to remove
-            
+
         Returns:
             Updated note if found, None otherwise
         """
@@ -233,10 +233,10 @@ class NoteService:
 
     def delete_note(self, note_id: str) -> bool:
         """Delete a note.
-        
+
         Args:
             note_id: Note ID to delete
-            
+
         Returns:
             True if deleted, False if not found
         """

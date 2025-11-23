@@ -13,17 +13,17 @@ from pkm.services.task_service import TaskService
 @cli.group()
 def organize() -> None:
     """Organize notes and tasks by assigning to courses.
-    
+
     \b
     Commands:
       pkm organize note NOTE_ID --course NAME    - Move note to course
       pkm organize task TASK_ID --course NAME    - Move task to course
-    
+
     \b
     Examples:
       pkm organize note n_20251123_140000_xyz --course "Biology 101"
       pkm organize task t_20251123_140000_abc --course "Math 201"
-    
+
     Use this to move items from your inbox into organized courses.
     """
     pass
@@ -36,26 +36,26 @@ def organize() -> None:
 @click.pass_context
 def organize_note(ctx: click.Context, note_id: str, course: str, add_topics: tuple[str, ...]) -> None:
     """Assign a note to a course (move from inbox).
-    
+
     \b
     NOTE_ID: The ID of the note to organize
-    
+
     \b
     Options:
       -c, --course TEXT       Course name (required)
       -t, --add-topics TEXT   Add topics (can use multiple times)
-    
+
     \b
     Examples:
       # Move note to course
       pkm organize note n_20251123_140000_xyz --course "Biology 101"
-      
+
       # Move and add topics
       pkm organize note n_20251123_140000_xyz \\
         --course "Biology 101" \\
         --add-topics "Photosynthesis" \\
         --add-topics "Cell Structure"
-    
+
     Organized notes no longer appear in your inbox.
     """
     try:
@@ -89,23 +89,23 @@ def organize_note(ctx: click.Context, note_id: str, course: str, add_topics: tup
 @click.pass_context
 def organize_task(ctx: click.Context, task_id: str, course: str) -> None:
     """Assign a task to a course (move from inbox).
-    
+
     \b
     TASK_ID: The ID of the task to organize
-    
+
     \b
     Options:
       -c, --course TEXT    Course name (required)
-    
+
     \b
     Examples:
       # Move task to course
       pkm organize task t_20251123_140000_xyz --course "Math 201"
-      
+
       # Organize multiple tasks
       pkm organize task t_123 --course "Biology 101"
       pkm organize task t_456 --course "Biology 101"
-    
+
     Organized tasks no longer appear in your inbox.
     """
     try:

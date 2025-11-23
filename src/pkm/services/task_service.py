@@ -16,7 +16,7 @@ class TaskService:
 
     def __init__(self, data_dir: Path) -> None:
         """Initialize task service.
-        
+
         Args:
             data_dir: Directory containing data.json
         """
@@ -46,13 +46,13 @@ class TaskService:
         course: str | None = None,
     ) -> Task:
         """Create a new task.
-        
+
         Args:
             title: Task title
             due_date: Optional due date
             priority: Task priority (high, medium, low)
             course: Optional course assignment
-            
+
         Returns:
             Created task
         """
@@ -78,10 +78,10 @@ class TaskService:
 
     def get_task(self, task_id: str) -> Task | None:
         """Get a task by ID.
-        
+
         Args:
             task_id: Task ID
-            
+
         Returns:
             Task if found, None otherwise
         """
@@ -93,7 +93,7 @@ class TaskService:
 
     def list_tasks(self) -> list[Task]:
         """List all tasks.
-        
+
         Returns:
             List of all tasks
         """
@@ -102,7 +102,7 @@ class TaskService:
 
     def get_inbox_tasks(self) -> list[Task]:
         """Get all tasks in inbox (course=None).
-        
+
         Returns:
             List of inbox tasks
         """
@@ -110,7 +110,7 @@ class TaskService:
 
     def get_tasks_today(self) -> list[Task]:
         """Get all tasks due today.
-        
+
         Returns:
             List of tasks due today
         """
@@ -122,7 +122,7 @@ class TaskService:
 
     def get_tasks_this_week(self) -> list[Task]:
         """Get all tasks due within 7 days.
-        
+
         Returns:
             List of tasks due this week
         """
@@ -137,7 +137,7 @@ class TaskService:
 
     def get_tasks_overdue(self) -> list[Task]:
         """Get all overdue tasks (past due and not completed).
-        
+
         Returns:
             List of overdue tasks
         """
@@ -151,10 +151,10 @@ class TaskService:
 
     def complete_task(self, task_id: str) -> Task | None:
         """Mark a task as completed.
-        
+
         Args:
             task_id: Task ID to complete
-            
+
         Returns:
             Updated task if found, None otherwise
         """
@@ -176,11 +176,11 @@ class TaskService:
 
     def add_subtask(self, task_id: str, title: str) -> Task | None:
         """Add a subtask to a task.
-        
+
         Args:
             task_id: Parent task ID
             title: Subtask title
-            
+
         Returns:
             Updated task if found, None otherwise
         """
@@ -211,11 +211,11 @@ class TaskService:
 
     def complete_subtask(self, task_id: str, subtask_id: int) -> Task | None:
         """Mark a subtask as completed.
-        
+
         Args:
             task_id: Parent task ID
             subtask_id: Subtask ID to complete (integer)
-            
+
         Returns:
             Updated task if found, None otherwise
         """
@@ -241,11 +241,11 @@ class TaskService:
 
     def organize_task(self, task_id: str, course: str) -> Task | None:
         """Assign a task to a course (move from inbox).
-        
+
         Args:
             task_id: Task ID to organize
             course: Course name to assign
-            
+
         Returns:
             Updated task if found, None otherwise
         """
@@ -266,10 +266,10 @@ class TaskService:
 
     def get_tasks_by_course(self, course_name: str) -> list[Task]:
         """Get all tasks for a specific course.
-        
+
         Args:
             course_name: Course name to filter by
-            
+
         Returns:
             List of tasks in the course
         """
@@ -277,10 +277,10 @@ class TaskService:
 
     def get_tasks_by_priority(self, priority: str) -> list[Task]:
         """Get all tasks with a specific priority.
-        
+
         Args:
             priority: Priority level (high, medium, low)
-            
+
         Returns:
             List of tasks with the priority
         """
@@ -288,11 +288,11 @@ class TaskService:
 
     def link_note(self, task_id: str, note_id: str) -> Task | None:
         """Link a note to a task (bidirectional).
-        
+
         Args:
             task_id: Task ID
             note_id: Note ID to link
-            
+
         Returns:
             Updated task if found, None otherwise
         """
@@ -325,11 +325,11 @@ class TaskService:
 
     def unlink_note(self, task_id: str, note_id: str) -> Task | None:
         """Unlink a note from a task (bidirectional).
-        
+
         Args:
             task_id: Task ID
             note_id: Note ID to unlink
-            
+
         Returns:
             Updated task if found, None otherwise
         """

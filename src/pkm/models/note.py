@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, field_validator
 
 class Note(BaseModel):
     """A note capturing information, lecture notes, ideas, or references.
-    
+
     Attributes:
         id: Unique identifier (e.g., "n1", "n42")
         content: Note body text (multi-line supported)

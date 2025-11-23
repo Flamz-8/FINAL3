@@ -13,10 +13,10 @@ from pkm.utils.editor import open_in_editor
 
 def get_data_dir(ctx: click.Context) -> Path:
     """Get data directory from context or use default.
-    
+
     Args:
         ctx: Click context
-        
+
     Returns:
         Path to data directory
     """
@@ -32,14 +32,14 @@ def get_data_dir(ctx: click.Context) -> Path:
 @cli.group()
 def note() -> None:
     """Manage notes - edit, delete, and organize.
-    
+
     \b
     Commands:
       pkm note edit NOTE_ID       - Edit note in external editor
       pkm note delete NOTE_ID     - Delete a note
       pkm note add-topic NOTE_ID  - Add topics to a note
       pkm note remove-topic       - Remove topic from a note
-    
+
     \b
     Examples:
       pkm note edit n_20251123_142055_abc
@@ -54,29 +54,29 @@ def note() -> None:
 @click.pass_context
 def edit_note(ctx: click.Context, note_id: str) -> None:
     """Edit a note in your external editor.
-    
+
     \b
     NOTE_ID: The note ID to edit (use 'pkm view inbox' to see IDs)
-    
+
     \b
     Examples:
       pkm note edit n_20251123_142055_abc
-    
+
     \b
     Editor Selection:
       1. Uses $EDITOR environment variable if set
       2. Falls back to platform default:
          - Windows: notepad.exe
          - macOS/Linux: nano
-    
+
     \b
     To set your preferred editor:
       # Linux/macOS
       export EDITOR=vim
-      
+
       # Windows PowerShell
       $env:EDITOR = "code --wait"
-    
+
     The editor will open with the current note content. Save and close
     to update the note. If you exit without changes, the note is unchanged.
     """
@@ -124,22 +124,22 @@ def edit_note(ctx: click.Context, note_id: str) -> None:
 @click.pass_context
 def delete_note(ctx: click.Context, note_id: str, yes: bool) -> None:
     """Delete a note.
-    
+
     \b
     NOTE_ID: The note ID to delete (use 'pkm view inbox' to see IDs)
-    
+
     \b
     Options:
       -y, --yes    Skip confirmation prompt
-    
+
     \b
     Examples:
       # With confirmation
       pkm note delete n_20251123_142055_abc
-      
+
       # Skip confirmation
       pkm note delete n_20251123_142055_abc -y
-    
+
     WARNING: This action cannot be undone!
     """
     try:
@@ -189,11 +189,11 @@ def delete_note(ctx: click.Context, note_id: str, yes: bool) -> None:
 @click.pass_context
 def add_topic_to_note(ctx: click.Context, note_id: str, topics: tuple[str, ...]) -> None:
     """Add topics to a note.
-    
+
     \b
     NOTE_ID: The note ID to add topics to
     TOPICS: One or more topics to add
-    
+
     \b
     Examples:
       pkm note add-topic n_20251123_142055_abc "Biology"
@@ -223,11 +223,11 @@ def add_topic_to_note(ctx: click.Context, note_id: str, topics: tuple[str, ...])
 @click.pass_context
 def remove_topic_from_note(ctx: click.Context, note_id: str, topic: str) -> None:
     """Remove a topic from a note.
-    
+
     \b
     NOTE_ID: The note ID to remove topic from
     TOPIC: The topic to remove
-    
+
     \b
     Examples:
       pkm note remove-topic n_20251123_142055_abc "Biology"

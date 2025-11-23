@@ -9,7 +9,7 @@ from pkm.models.task import Task
 
 class DataSchema(TypedDict):
     """JSON data storage schema.
-    
+
     Structure:
         {
             "notes": [...],

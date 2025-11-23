@@ -12,13 +12,13 @@ _id_counters = {
 
 def generate_id(prefix: str) -> str:
     """Generate a unique ID with format: {prefix}{number}.
-    
+
     Args:
         prefix: Entity type prefix ('n' for note, 't' for task, 'c' for course)
-        
+
     Returns:
         Unique ID string (e.g., "n1", "t5", "c2")
-        
+
     Example:
         >>> id = generate_id("n")
         >>> id.startswith("n")
@@ -31,7 +31,7 @@ def generate_id(prefix: str) -> str:
 
 def reset_id_counter(prefix: str, max_id: int) -> None:
     """Reset ID counter to the maximum existing ID.
-    
+
     Args:
         prefix: Entity type prefix
         max_id: Maximum existing ID number

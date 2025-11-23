@@ -76,7 +76,7 @@ class TestDateParser:
 
     def test_parse_invalid_date(self) -> None:
         """Test that invalid date string returns None."""
-        result = parse_due_date("not a date at all")
+        parse_due_date("not a date at all")
         # May parse to something or None, depending on fuzzy parsing
         # At minimum should not crash
 

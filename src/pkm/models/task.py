@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 class Subtask(BaseModel):
     """A smaller actionable item nested under a parent task.
-    
+
     Attributes:
         id: Subtask ID (integer, unique within parent task)
         title: Subtask description
@@ -24,7 +24,7 @@ class Subtask(BaseModel):
 
 class Task(BaseModel):
     """An actionable item with optional deadline, priority, and subtasks.
-    
+
     Attributes:
         id: Unique identifier (e.g., "t1", "t42")
         title: Task description

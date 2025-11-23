@@ -9,19 +9,19 @@ from dateutil.relativedelta import relativedelta
 
 def parse_due_date(date_str: str) -> Optional[datetime]:
     """Parse a date string into a datetime object.
-    
+
     Supports multiple formats:
     - Natural language: "tomorrow", "next Friday", "in 3 days"
     - ISO format: "2025-12-01"
     - Human format: "Dec 1", "December 1 2025"
     - With times: "Friday 11:59pm", "tomorrow at 5pm"
-    
+
     Args:
         date_str: The date string to parse
-        
+
     Returns:
         datetime object or None if parsing fails
-        
+
     Examples:
         >>> parse_due_date("tomorrow")
         datetime(2025, 11, 24, 23, 59, 59)
@@ -96,13 +96,13 @@ def parse_due_date(date_str: str) -> Optional[datetime]:
 
 def format_due_date(dt: datetime) -> str:
     """Format a datetime into a human-readable due date string.
-    
+
     Args:
         dt: The datetime to format
-        
+
     Returns:
         Formatted string like "Friday, Nov 25 at 11:59 PM (2 days)"
-        
+
     Examples:
         >>> dt = datetime(2025, 11, 25, 23, 59, 0)
         >>> format_due_date(dt)
