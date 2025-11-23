@@ -1,4 +1,4 @@
-# Research: Student PKM CLI
+# Research: Pro Study Planner
 
 **Phase**: 0 - Technology Research & Decision Rationale  
 **Date**: 2025-11-23  
@@ -6,7 +6,7 @@
 
 ## Overview
 
-This document captures research findings and technical decisions for building the Student PKM CLI. Each decision documents the rationale, alternatives considered, and how it aligns with constitution principles and success criteria.
+This document captures research findings and technical decisions for building the Pro Study Planner. Each decision documents the rationale, alternatives considered, and how it aligns with constitution principles and success criteria.
 
 ---
 

@@ -676,7 +676,7 @@ pkm search "study" -l 10  # Limit to 10 results
 
 **Output**:
 ```
-Student PKM CLI v1.0.0
+Pro Study Planner v1.0.0
 Python 3.11+ · uv package manager
 Data directory: /Users/student/.pkm/
 ```

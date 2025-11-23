@@ -1,4 +1,4 @@
-# Quickstart Guide: Student PKM CLI
+# Quickstart Guide: Pro Study Planner
 
 **Phase**: 1 - Design & Contracts  
 **Date**: 2025-11-23  
@@ -6,7 +6,7 @@
 
 ## Overview
 
-Get up and running with the Student PKM CLI in under 5 minutes. This guide covers installation, basic workflows, and common scenarios for students managing class notes and tasks.
+Get up and running with the Pro Study Planner in under 5 minutes. This guide covers installation, basic workflows, and common scenarios for students managing class notes and tasks.
 
 ---
 
@@ -39,26 +39,26 @@ Verify installation:
 uv --version
 ```
 
-### Install Student PKM CLI
+### Install Pro Study Planner
 
 **Option 1: From PyPI** (when published):
 ```bash
-uv tool install student-pkm
+uv tool install pro-study-planner
 ```
 
 **Option 2: From source** (development):
 ```bash
-git clone https://github.com/yourusername/student-pkm.git
-cd student-pkm
+git clone https://github.com/yourusername/pro-study-planner.git
+cd pro-study-planner
 uv sync
-uv run pkm --version
+pkm --version
 ```
 
 ### Verify Installation
 
 ```bash
 pkm --version
-# Output: Student PKM CLI v1.0.0
+# Output: Pro Study Planner v1.0.0
 
 pkm --help
 # Shows available commands
@@ -597,7 +597,7 @@ pkm search "partial content"
 
 ## Summary
 
-**Installation**: `uv tool install student-pkm` → `pkm --version`
+**Installation**: `uv tool install pro-study-planner` → `pkm --version`
 
 **Core Workflow**:
 1. **Capture**: `pkm add note` / `pkm add task`

@@ -1,4 +1,4 @@
-# Data Model: Student PKM CLI
+# Data Model: Pro Study Planner
 
 **Phase**: 1 - Data Model Design  
 **Date**: 2025-11-23  
@@ -6,7 +6,7 @@
 
 ## Overview
 
-This document defines the conceptual data model for the Student PKM CLI. All entities are implemented as Pydantic models for type safety and runtime validation. The model supports the "quick capture, organize later" workflow with clear relationships between notes, tasks, courses, and topics.
+This document defines the conceptual data model for the Pro Study Planner. All entities are implemented as Pydantic models for type safety and runtime validation. The model supports the "quick capture, organize later" workflow with clear relationships between notes, tasks, courses, and topics.
 
 ---
 

@@ -4,7 +4,7 @@ Auto-generated from all feature plans. Last updated: 2025-11-23
 
 ## Active Technologies
 
-- Python 3.11+ + Click (CLI framework), python-dateutil (date parsing), rich (terminal formatting), pydantic (data validation) (001-student-pkm-cli)
+- Python 3.11+ + Click (CLI framework), python-dateutil (date parsing), rich (terminal formatting), pydantic (data validation) (001-student-pkm-cli: Pro Study Planner)
 
 ## Project Structure
 
@@ -23,7 +23,7 @@ Python 3.11+: Follow standard conventions
 
 ## Recent Changes
 
-- 001-student-pkm-cli: Added Python 3.11+ + Click (CLI framework), python-dateutil (date parsing), rich (terminal formatting), pydantic (data validation)
+- 001-student-pkm-cli (Pro Study Planner): Added Python 3.11+ + Click (CLI framework), python-dateutil (date parsing), rich (terminal formatting), pydantic (data validation)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

@@ -1,4 +1,4 @@
-# Implementation Plan: Student PKM CLI
+# Implementation Plan: Pro Study Planner
 
 **Branch**: `001-student-pkm-cli` | **Date**: 2025-11-23 | **Spec**: [spec.md](./spec.md)
 **Input**: Feature specification from `/specs/001-student-pkm-cli/spec.md`

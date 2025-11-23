@@ -1,4 +1,4 @@
-# Feature Specification: Student PKM CLI
+# Feature Specification: Pro Study Planner
 
 **Feature Branch**: `001-student-pkm-cli`  
 **Created**: 2025-11-23  
