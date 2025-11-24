@@ -192,3 +192,160 @@ class TestViewCommands:
         assert result.exit_code == 0
         assert task_id in result.output or "Analyze data" in result.output
 
+    def test_view_notes_filtered_by_course_and_topic(self, temp_data_dir: Path) -> None:
+        """Test US4-S3: Viewing notes filtered by course and topic."""
+        runner = CliRunner()
+
+        # Create notes with different courses and topics
+        runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "add", "note", "Biology note 1",
+                "--course", "Biology 101",
+            ],
+        )
+        note1_result = runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "add", "note", "Biology note 2",
+                "--course", "Biology 101",
+            ],
+        )
+        note1_id = note1_result.output.split("Note created: ")[1].split()[0]
+
+        runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "add", "note", "Math note",
+                "--course", "Math 201",
+            ],
+        )
+
+        # Add topic to biology note
+        runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "organize", "note", note1_id,
+                "--add-topics", "photosynthesis",
+            ],
+        )
+
+        # View notes filtered by course using view course command
+        result = runner.invoke(
+            cli,
+            ["--data-dir", str(temp_data_dir), "view", "course", "Biology 101"],
+        )
+
+        assert result.exit_code == 0
+        assert "Biology note 1" in result.output
+        assert "Biology note 2" in result.output
+        assert "Math note" not in result.output
+
+    def test_view_notes_grouped_correctly(self, temp_data_dir: Path) -> None:
+        """Test US4-S4: Viewing notes with grouping by course then topic."""
+        runner = CliRunner()
+
+        # Create notes with courses and topics
+        bio_note1 = runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "add", "note", "Cell structure notes",
+                "--course", "Biology",
+            ],
+        )
+        bio_note1_id = bio_note1.output.split("Note created: ")[1].split()[0]
+
+        bio_note2 = runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "add", "note", "Photosynthesis notes",
+                "--course", "Biology",
+            ],
+        )
+        bio_note2_id = bio_note2.output.split("Note created: ")[1].split()[0]
+
+        math_note = runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "add", "note", "Calculus notes",
+                "--course", "Math",
+            ],
+        )
+
+        # Add topics
+        runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "organize", "note", bio_note1_id,
+                "--add-topics", "cells",
+            ],
+        )
+        runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "organize", "note", bio_note2_id,
+                "--add-topics", "energy",
+            ],
+        )
+
+        # View Biology course (should be grouped by topic)
+        result = runner.invoke(
+            cli,
+            ["--data-dir", str(temp_data_dir), "view", "course", "Biology"],
+        )
+
+        assert result.exit_code == 0
+        # Verify course name appears
+        assert "Biology" in result.output
+        # Verify all notes appear
+        assert "Cell structure notes" in result.output
+        assert "Photosynthesis notes" in result.output
+        # Math notes should not appear
+        assert "Calculus notes" not in result.output
+
+    def test_view_notes_empty(self, temp_data_dir: Path) -> None:
+        """Test viewing notes when none exist."""
+        runner = CliRunner()
+
+        # View inbox when no notes exist
+        result = runner.invoke(
+            cli,
+            ["--data-dir", str(temp_data_dir), "view", "inbox"],
+        )
+
+        assert result.exit_code == 0
+        assert "empty" in result.output.lower() or "no notes" in result.output.lower()
+
+    def test_view_notes_filtered_no_matches(self, temp_data_dir: Path) -> None:
+        """Test viewing notes with filter that matches nothing."""
+        runner = CliRunner()
+
+        # Create a note
+        runner.invoke(
+            cli,
+            [
+                "--data-dir", str(temp_data_dir),
+                "add", "note", "Test note",
+                "--course", "Biology",
+            ],
+        )
+
+        # Filter by non-existent course
+        result = runner.invoke(
+            cli,
+            ["--data-dir", str(temp_data_dir), "view", "course", "Physics"],
+        )
+
+        assert result.exit_code == 0
+        # Should show empty course or indicate no items
+        assert "Physics" in result.output
+

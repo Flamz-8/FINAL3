@@ -217,12 +217,12 @@
 ### Integration Tests for US4 (Write FIRST - TDD)
 
 - [X] T074 [US4] Write `tests/integration/test_organize_commands.py::test_organize_note_adds_topics()` validating US4-S1 (MUST FAIL before T069)
-- [ ] T075 [US4] Write `tests/integration/test_add_commands.py::test_edit_note_opens_editor()` validating US4-S2 (MUST FAIL before T070)
-- [ ] T076 [US4] Write `tests/integration/test_view_commands.py` with tests for:
+- [X] T075 [US4] Write `tests/integration/test_note_commands.py` with editor tests validating US4-S2 (8 tests: edit, delete with confirmation)
+- [X] T076 [US4] Write `tests/integration/test_view_commands.py` with tests for:
       - `test_view_notes_filtered_by_course_and_topic()` validates US4-S3
       - `test_view_notes_grouped_correctly()` validates US4-S4
       (MUST FAIL before T071-T072)
-- [ ] T077 [US4] Write `tests/integration/test_organize_commands.py::test_delete_note_with_confirmation()` validating US4-S5 (MUST FAIL before T073)
+- [X] T077 [US4] Write `tests/integration/test_note_commands.py::test_delete_note_with_confirmation()` validating US4-S5 (MUST FAIL before T073)
 
 ### Edge Case Tests for US4
 
