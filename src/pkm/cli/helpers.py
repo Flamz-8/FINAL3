@@ -8,7 +8,7 @@ console = Console()
 
 def success(message: str) -> None:
     """Display a success message.
-    
+
     Args:
         message: Success message to display
     """
@@ -17,7 +17,7 @@ def success(message: str) -> None:
 
 def error(message: str) -> None:
     """Display an error message.
-    
+
     Args:
         message: Error message to display
     """
@@ -26,20 +26,29 @@ def error(message: str) -> None:
 
 def info(message: str) -> None:
     """Display an info message.
-    
+
     Args:
         message: Info message to display
     """
     console.print(f"[blue]ℹ[/blue] {message}")
 
 
+def warning(message: str) -> None:
+    """Display a warning message.
+
+    Args:
+        message: Warning message to display
+    """
+    console.print(f"[yellow]⚠[/yellow] {message}", style="yellow")
+
+
 def create_table(title: str, columns: list[str]) -> Table:
     """Create a formatted table.
-    
+
     Args:
         title: Table title
         columns: Column headers
-        
+
     Returns:
         Rich Table object
     """
@@ -51,10 +60,10 @@ def create_table(title: str, columns: list[str]) -> Table:
 
 def format_datetime(dt: object) -> str:
     """Format datetime for display.
-    
+
     Args:
         dt: Datetime object or string
-        
+
     Returns:
         Formatted string
     """
@@ -74,11 +83,11 @@ def format_datetime(dt: object) -> str:
 
 def truncate(text: str, max_length: int = 50) -> str:
     """Truncate text to max length.
-    
+
     Args:
         text: Text to truncate
         max_length: Maximum length
-        
+
     Returns:
         Truncated text with ellipsis if needed
     """

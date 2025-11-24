@@ -5,10 +5,10 @@ from typing import Any
 
 def get_schema_version(data: dict[str, Any]) -> int:
     """Get the schema version from data.
-    
+
     Args:
         data: JSON data dictionary
-        
+
     Returns:
         Schema version (default: 1)
     """
@@ -17,10 +17,10 @@ def get_schema_version(data: dict[str, Any]) -> int:
 
 def migrate_to_latest(data: dict[str, Any]) -> dict[str, Any]:
     """Migrate data to the latest schema version.
-    
+
     Args:
         data: JSON data dictionary
-        
+
     Returns:
         Migrated data
     """
@@ -41,11 +41,11 @@ def migrate_to_latest(data: dict[str, Any]) -> dict[str, Any]:
 
 def add_schema_version(data: dict[str, Any], version: int = 1) -> dict[str, Any]:
     """Add schema version to data.
-    
+
     Args:
         data: JSON data dictionary
         version: Schema version number
-        
+
     Returns:
         Data with schema version added
     """

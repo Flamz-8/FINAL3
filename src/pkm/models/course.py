@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 class Course(BaseModel):
     """A course/subject for organizing notes and tasks.
-    
+
     Attributes:
         name: Course name (e.g., "Biology 101")
         note_count: Number of notes in this course (computed)

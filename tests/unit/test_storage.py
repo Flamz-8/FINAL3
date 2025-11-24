@@ -26,7 +26,7 @@ class TestJSONStore:
         data = create_empty_schema()
         data["notes"].append(
             {
-                "id": "n_20251123_100000_abc",
+                "id": "n1",
                 "content": "Test note",
                 "created_at": "2025-11-23T10:00:00",
                 "modified_at": "2025-11-23T10:00:00",
@@ -40,7 +40,7 @@ class TestJSONStore:
         loaded = store.load()
 
         assert len(loaded["notes"]) == 1
-        assert loaded["notes"][0]["id"] == "n_20251123_100000_abc"
+        assert loaded["notes"][0]["id"] == "n1"
 
     def test_atomic_write_creates_temp_file(self, temp_data_dir: Path) -> None:
         """Test that save uses atomic write with temp file."""
@@ -57,7 +57,7 @@ class TestJSONStore:
     def test_backup_creation(self, temp_data_dir: Path) -> None:
         """Test that backup is created when overwriting existing file."""
         store = JSONStore(temp_data_dir / "data.json")
-        
+
         # Save initial data
         data1 = create_empty_schema()
         data1["notes"].append({"id": "note1", "content": "First version"})
@@ -116,6 +116,6 @@ class TestJSONStore:
     def test_restore_without_backup_fails(self, temp_data_dir: Path) -> None:
         """Test that restore fails when no backup exists."""
         store = JSONStore(temp_data_dir / "data.json")
-        
+
         with pytest.raises(FileNotFoundError):
             store.restore_from_backup()

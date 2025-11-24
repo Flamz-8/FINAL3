@@ -352,6 +352,25 @@ uv run python -m pkm search "cell" --topic "Biology"
   - `pkm view course` - View all items in a specific course
   - Automatic course creation when organizing
 
+- **Note Management**
+  - `pkm note edit` - Edit notes in external editor (respects $EDITOR)
+  - `pkm note delete` - Delete notes with confirmation
+  - `pkm note add-topic` - Add topics to notes
+  - `pkm note remove-topic` - Remove topics from notes
+
+- **Note-Task Linking**
+  - `pkm task link-note` - Link reference notes to tasks
+  - `pkm task unlink-note` - Remove note links
+  - `pkm view task` - View task with linked notes (--expand for full content)
+  - `pkm view note` - View note with referencing tasks
+  - Bidirectional references maintained automatically
+
+- **Help & Onboarding**
+  - First-run tutorial with quick start guide
+  - `pkm help onboarding` - Replay welcome tutorial
+  - `pkm help commands` - Complete command reference
+  - Context-aware error messages with suggestions
+
 - **Search**
   - `pkm search` - Full-text search across notes and tasks
   - Filter by type (notes/tasks)
@@ -369,22 +388,17 @@ uv run python -m pkm search "cell" --topic "Biology"
   - Atomic writes with automatic backup
   - Corruption recovery
 
-### ⏳ Coming Soon (Phase 6-7, 9-10)
+### ⏳ Optional Enhancements (Phase 11)
 
-- **Note Management** (Phase 6)
-  - Note editing with external editor
-  - Note deletion
-  - Topic management
+- **Performance Optimization**
+  - In-memory indexes for faster searches
+  - Lazy loading for large datasets
+  - Progress spinners for long operations
 
-- **Note-Task Linking** (Phase 9)
-  - Link notes to tasks for context
-  - View linked notes from tasks
-  - Bidirectional references
-
-- **Help & Onboarding** (Phase 7)
-  - First-run tutorial
-  - Command-specific help with examples
-  - Error suggestions
+- **Additional Polish**
+  - Extended validation and error handling
+  - Performance benchmarks
+  - Cross-platform testing
 
 ---
 
@@ -417,8 +431,14 @@ Quickly find any note or task across your entire knowledge base
 ### 📊 Course Organization
 Group and view all notes and tasks by academic subject
 
-### 🔗 Note-Task Linking *(Coming Soon)*
-Reference notes from tasks for context
+### 🔗 Note-Task Linking
+Reference notes from tasks for context, keep all related information connected
+
+### ✏️ Note Editing
+Edit notes in your preferred external editor (vim, nano, VS Code, etc.)
+
+### 🎓 Onboarding & Help
+Built-in tutorial and comprehensive help system for easy learning
 
 ### 💾 Offline First
 All data stored locally in human-readable JSON format
@@ -450,6 +470,16 @@ pkm add task TITLE [--due DATE] [--priority high|medium|low] [--course NAME]
 pkm task complete TASK_ID              # Mark task as done
 pkm task add-subtask TASK_ID TITLE     # Add a subtask/bullet point
 pkm task check-subtask TASK_ID NUM     # Complete a subtask
+pkm task link-note TASK_ID NOTE_ID     # Link a note to a task
+pkm task unlink-note TASK_ID NOTE_ID   # Unlink a note from a task
+```
+
+### Note Commands
+```bash
+pkm note edit NOTE_ID                  # Edit note in external editor
+pkm note delete NOTE_ID [--yes]        # Delete a note
+pkm note add-topic NOTE_ID TOPIC       # Add topic to note
+pkm note remove-topic NOTE_ID TOPIC    # Remove topic from note
 ```
 
 ### View Commands
@@ -460,6 +490,8 @@ pkm view week          # Tasks due this week (next 7 days)
 pkm view overdue       # Past-due incomplete tasks
 pkm view courses       # List all courses
 pkm view course NAME   # View items in a specific course
+pkm view task ID       # View task details with linked notes
+pkm view note ID       # View note details with referencing tasks
 ```
 
 ### Organize Commands
@@ -473,11 +505,13 @@ pkm organize task TASK_ID --course NAME     # Move task to course
 pkm search QUERY [--type notes|tasks] [--course NAME] [--topic NAME]
 ```
 
-### Help
+### Help Commands
 ```bash
-pkm --help            # Show all commands
-pkm add --help        # Help for add commands
-pkm add note --help   # Help for specific command
+pkm --help               # Show all commands
+pkm help onboarding      # Show welcome tutorial
+pkm help commands        # Complete command reference
+pkm add --help           # Help for add commands
+pkm add note --help      # Help for specific command
 ```
 
 ---
@@ -541,8 +575,56 @@ uv run python -m pkm add note "Thesis: Climate change impacts on agriculture" \
   --course "English 101" \
   --topics "Research Paper"
 
+# Link notes to task for reference
+uv run python -m pkm task link-note TASK_ID NOTE_ID
+
+# View task with all linked notes
+uv run python -m pkm view task TASK_ID --expand
+
 # Check your progress
 uv run python -m pkm view week
+```
+
+### Note Editing Workflow
+```bash
+# Create a note with initial content
+uv run python -m pkm add note "Initial lecture notes on photosynthesis"
+
+# Later, edit the note in your preferred editor
+# Set your editor (optional, uses system default otherwise)
+export EDITOR=vim  # or code, nano, etc.
+
+# Edit the note
+uv run python -m pkm note edit NOTE_ID
+
+# Add topics after editing
+uv run python -m pkm note add-topic NOTE_ID "Biology" "Photosynthesis"
+
+# View the note with all details
+uv run python -m pkm view note NOTE_ID
+```
+
+### Research with Linked Notes
+```bash
+# Create research notes
+uv run python -m pkm add note "Key findings from Smith et al. 2024" \
+  --course "Biology 101" \
+  --topics "Research" "Photosynthesis"
+
+# Create related task
+uv run python -m pkm add task "Write literature review section" \
+  --course "Biology 101" \
+  --due "next Friday" \
+  --priority high
+
+# Link research notes to the task
+uv run python -m pkm task link-note TASK_ID NOTE_ID
+
+# When working on the task, view with all references
+uv run python -m pkm view task TASK_ID --expand
+
+# See all tasks that reference a note
+uv run python -m pkm view note NOTE_ID
 ```
 
 ---

@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 class Subtask(BaseModel):
     """A smaller actionable item nested under a parent task.
-    
+
     Attributes:
         id: Subtask ID (integer, unique within parent task)
         title: Subtask description
@@ -24,9 +24,9 @@ class Subtask(BaseModel):
 
 class Task(BaseModel):
     """An actionable item with optional deadline, priority, and subtasks.
-    
+
     Attributes:
-        id: Unique identifier (e.g., "t_20251123_140000_xyz")
+        id: Unique identifier (e.g., "t1", "t42")
         title: Task description
         created_at: Timestamp when task was created
         due_date: When task is due (None = no deadline)
@@ -38,7 +38,7 @@ class Task(BaseModel):
         subtasks: Nested subtasks
     """
 
-    id: str = Field(..., pattern=r"^t_\d{8}_\d{6}_[a-z0-9]{3}$")
+    id: str = Field(..., pattern=r"^t\d+$")
     title: str = Field(..., min_length=1, max_length=200)
     created_at: datetime
     due_date: datetime | None = None

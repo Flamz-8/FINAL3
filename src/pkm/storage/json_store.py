@@ -3,14 +3,13 @@
 import json
 import shutil
 from pathlib import Path
-from typing import Any
 
 from pkm.storage.schema import DataSchema, create_empty_schema
 
 
 class JSONStore:
     """Handles JSON file I/O with atomic writes and backup creation.
-    
+
     Ensures data integrity by:
     - Writing to temporary file first (.tmp)
     - Renaming to target file only if write succeeds
@@ -19,7 +18,7 @@ class JSONStore:
 
     def __init__(self, data_file: Path) -> None:
         """Initialize JSON store.
-        
+
         Args:
             data_file: Path to the data.json file
         """
@@ -29,10 +28,10 @@ class JSONStore:
 
     def load(self) -> DataSchema:
         """Load data from JSON file.
-        
+
         Returns:
             Data schema with notes, tasks, and courses
-            
+
         Raises:
             FileNotFoundError: If data file doesn't exist
             json.JSONDecodeError: If file contains invalid JSON
@@ -60,12 +59,12 @@ class JSONStore:
 
     def save(self, data: DataSchema) -> None:
         """Save data to JSON file with atomic write.
-        
+
         Process:
         1. Write to temporary file
         2. Create backup of existing file
         3. Rename temp file to target
-        
+
         Args:
             data: Data schema to save
         """
@@ -89,7 +88,7 @@ class JSONStore:
 
     def restore_from_backup(self) -> None:
         """Restore data from backup file.
-        
+
         Raises:
             FileNotFoundError: If backup file doesn't exist
         """

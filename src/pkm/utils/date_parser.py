@@ -1,6 +1,6 @@
 """Natural language date parsing utilities."""
 
-from datetime import datetime, date, time
+from datetime import datetime, time
 from typing import Optional
 
 from dateutil.parser import parse as dateutil_parse
@@ -9,19 +9,19 @@ from dateutil.relativedelta import relativedelta
 
 def parse_due_date(date_str: str) -> Optional[datetime]:
     """Parse a date string into a datetime object.
-    
+
     Supports multiple formats:
     - Natural language: "tomorrow", "next Friday", "in 3 days"
     - ISO format: "2025-12-01"
     - Human format: "Dec 1", "December 1 2025"
     - With times: "Friday 11:59pm", "tomorrow at 5pm"
-    
+
     Args:
         date_str: The date string to parse
-        
+
     Returns:
         datetime object or None if parsing fails
-        
+
     Examples:
         >>> parse_due_date("tomorrow")
         datetime(2025, 11, 24, 23, 59, 59)
@@ -32,18 +32,18 @@ def parse_due_date(date_str: str) -> Optional[datetime]:
     """
     if not date_str or not date_str.strip():
         return None
-    
+
     date_str = date_str.strip().lower()
     now = datetime.now()
-    
+
     # Handle special cases first
     if date_str in ["today", "tonight"]:
         return datetime.combine(now.date(), time(23, 59, 59))
-    
+
     if date_str == "tomorrow":
         tomorrow = now.date() + relativedelta(days=1)
         return datetime.combine(tomorrow, time(23, 59, 59))
-    
+
     # Handle "next [day]" (e.g., "next friday")
     if date_str.startswith("next "):
         day_name = date_str[5:]
@@ -58,7 +58,7 @@ def parse_due_date(date_str: str) -> Optional[datetime]:
             return datetime.combine(next_day, time(23, 59, 59))
         except (ValueError, AttributeError):
             pass
-    
+
     # Handle "in X days/weeks/months"
     if date_str.startswith("in "):
         parts = date_str[3:].split()
@@ -66,7 +66,7 @@ def parse_due_date(date_str: str) -> Optional[datetime]:
             try:
                 count = int(parts[0])
                 unit = parts[1].rstrip('s')  # Remove plural 's'
-                
+
                 if unit in ["day", "days"]:
                     target_date = now.date() + relativedelta(days=count)
                 elif unit in ["week", "weeks"]:
@@ -75,20 +75,20 @@ def parse_due_date(date_str: str) -> Optional[datetime]:
                     target_date = now.date() + relativedelta(months=count)
                 else:
                     target_date = None
-                
+
                 if target_date:
                     return datetime.combine(target_date, time(23, 59, 59))
             except (ValueError, IndexError):
                 pass
-    
+
     # Try general parsing with dateutil
     try:
         parsed = dateutil_parse(date_str, fuzzy=True, default=now)
-        
+
         # If only date was provided (no time), default to end of day
         if ":" not in date_str and "am" not in date_str and "pm" not in date_str:
             parsed = datetime.combine(parsed.date(), time(23, 59, 59))
-        
+
         return parsed
     except (ValueError, AttributeError):
         return None
@@ -96,13 +96,13 @@ def parse_due_date(date_str: str) -> Optional[datetime]:
 
 def format_due_date(dt: datetime) -> str:
     """Format a datetime into a human-readable due date string.
-    
+
     Args:
         dt: The datetime to format
-        
+
     Returns:
         Formatted string like "Friday, Nov 25 at 11:59 PM (2 days)"
-        
+
     Examples:
         >>> dt = datetime(2025, 11, 25, 23, 59, 0)
         >>> format_due_date(dt)
@@ -110,11 +110,11 @@ def format_due_date(dt: datetime) -> str:
     """
     now = datetime.now()
     days_until = (dt.date() - now.date()).days
-    
+
     # Format the date part
     date_str = dt.strftime("%A, %b %d")
     time_str = dt.strftime("at %I:%M %p").replace(" 0", " ")  # Remove leading zero from hour
-    
+
     # Add relative time indicator
     if days_until == 0:
         relative = "today"
@@ -126,5 +126,5 @@ def format_due_date(dt: datetime) -> str:
         relative = f"{abs(days_until)} days ago"
     else:
         relative = f"{days_until} days"
-    
+
     return f"{date_str} {time_str} ({relative})"
